@@ -3,13 +3,13 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\planta;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request;
 
 class PlantaController extends Controller {
 
 	public function __construct()
 	{
-		$this->middleware('auth', ['only' => ['create', 'store', 'edit', 'update', 'destroy']]);
+	//	$this->middleware('auth', ['only' => ['create', 'store', 'edit', 'update', 'destroy']]);
 
 	}
 	/**
@@ -32,7 +32,7 @@ class PlantaController extends Controller {
 	 */
 	public function create()
 	{
-
+		return view('plantes.crear');
 	}
 
 	/**
@@ -42,7 +42,7 @@ class PlantaController extends Controller {
 	 */
 	public function store()
 	{
-		//
+		dd(Request::all());
 	}
 
 	/**
