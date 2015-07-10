@@ -1,0 +1,45 @@
+  #map-canvas {
+    height: 50%;
+    margin: 5px;
+    padding: 0px
+  }
+  html, body {
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    overflow-y: inherit
+  }
+  #camps{
+    width: 100%;
+    height: 0px;
+    background: #000;
+    box-shadow: 10px 10px 3px #D8D8D8;
+    transition: height .4s;
+    display: none;
+  }
+  #esquerra{
+    float: left;
+    width: 50%;
+    height: 37%;
+    overflow-y: auto
+  }
+  #dreta{
+    float: left;
+    width: 50%;
+    height: 37%;
+    overflow-y: scroll
+  }
+  #nfocamp table{
+    margin: 10px;
+  }
+  #infocamp td:first-child{
+    text-align:right;
+  }
+  #infocamp td
+  {
+    padding: 5px;
+  }
+  #infocamp tr:first-child{
+    font-size: 20px;
+    font-weight: bold;
+  }

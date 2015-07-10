@@ -4,8 +4,10 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Laravel</title>
+	<title>Comunitat Agrícola AGRECO</title>
 	{!! Html::Style('/css/app.css') !!}
+	{!! Html::Style('/css/aplicacio.css') !!}
+
 	<!-- <link href="/css/app.css" rel="stylesheet"> -->
 
 	<!-- Fonts -->
@@ -17,6 +19,8 @@
 		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
+	<script src="js/general.js"></script>
+	@yield('head')
 </head>
 <body>
 	<nav class="navbar navbar-default">
@@ -28,12 +32,25 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">Laravel</a>
+				<a class="navbar-brand" href="#">AGRECO</a>
 			</div>
 
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
 				<ul class="nav navbar-nav">
-					<li><a href="/">Home</a></li>
+					@section('menuglobal')
+					<li><a href="/">Amics</a></li>
+					<li><a href="/">Galeria</a></li>
+					<li><a href="/">Missatgeria</a></li>
+					<li class="dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Consulta...<b class="caret"></b></a>
+						<ul class="dropdown-menu" role="menu">
+						<li><a href="#">Cultius</a></li>
+						<li><a href="#">Malalties</a></li>
+						<li><a href="#">Remeis</a></li>
+						<li ><a href="#">Altres</a></li>
+						</ul>
+					</li>
+					@show
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right">
@@ -44,6 +61,7 @@
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">
+								<li><a href="/auth/logout">Preferències</a></li>
 								<li><a href="/auth/logout">Logout</a></li>
 							</ul>
 						</li>
@@ -52,9 +70,21 @@
 			</div>
 		</div>
 	</nav>
+	<div>
+	  <div>
+	    <marquee scrollamount="1">Default marquee text scrolls from right to left</marquee>
+	  </div>
+	</div>
+		@yield('mapa')
 
-	@yield('content')
+		@yield('content')
 
+	<div id="esquerra">
+		@yield('esquerra')
+	</div>
+	<div id="dreta">
+	  @yield('dreta')
+	</div>
 	<!-- Scripts -->
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>

@@ -17,6 +17,25 @@ Route::resource('plantes', 'PlantaController');
 
 Route::resource('enfermetats', 'EnfermetatController');
 
+Route::get('usuari', function(){
+
+	return view('privat.usuari', ['name' => 'Beniganim']);
+});
+
+Route::get('camp', function(){
+
+	return View::make('privat.camp')->with('name', 'Quatretonda');
+});
+
+Route::get('cultiu', function(){
+
+	return View::make('privat.cultiu');
+});
+
+Route::get('galeria', function(){
+
+	return view('privat.galeria');
+});
 
 Route::get('home', 'HomeController@index');
 
