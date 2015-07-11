@@ -1,18 +1,32 @@
 @extends('app')
 @section('mapa')
-  <body>
+
       <!-- BEGIN Timeline Embed -->
       <div id="timeline-embed"></div>
       <script type="text/javascript">
         var timeline_config = {
          width: "100%",
          height: "50%",
-         source: 'example_json.json'
+         start_at_end:       true,
+         lang:               'ca',
+         start_zoom_adjust:  '4',
+         source: "{{ $json }}"
+         //source: "example_json.json"
         }
       </script>
       <script type="text/javascript" src="/js/storyjs-embed.js"></script>
       <!-- END Timeline Embed-->
-  </body>
+
+@stop
+@section('content')
+<!--<div id="overlay4">
+
+       <div>
+           <h2>Some awesome title</h2>
+           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia aliquid perspiciatis maxime sint deleniti. Modi odio odit accusamus quam debitis amet obcaecati unde dolores dignissimos doloribus. Consequatur mollitia repellendus ut!</p>
+       </div>
+       <div class="background"></div>
+   </div>-->
 @stop
 @section('esquerra')
 <!-- Informació del camp -->
@@ -42,11 +56,10 @@
     </td>
   </tr>
 </table>
-
-
 @stop
 @section('dreta')
-  @for ($i = 0; $i < 20; $i++)
-    <li>The current value is {{ $i }}</li>
-  @endfor
+{!! Form::open(array('url' => 'foo/bar')) !!}
+    {!! Form::select('Event', array('-1' => 'Selecciona event', '0' => 'Malaltia'), '-1'); !!}
+    {!! Form::submit('Crea'); !!}
+{!! Form::close() !!}
 @stop

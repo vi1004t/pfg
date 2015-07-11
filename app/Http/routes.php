@@ -27,10 +27,7 @@ Route::get('camp', function(){
 	return View::make('privat.camp')->with('name', 'Quatretonda');
 });
 
-Route::get('cultiu', function(){
-
-	return View::make('privat.cultiu');
-});
+Route::resource('cultiu', 'EventController');
 
 Route::get('galeria', function(){
 
