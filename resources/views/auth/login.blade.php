@@ -22,16 +22,17 @@
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
 						<div class="form-group">
-							<label class="col-md-4 control-label">E-Mail Address</label>
+							{!! Form::label('email', 'E-Mail Address', ['class'=>'col-md-4 control-label']) !!}
 							<div class="col-md-6">
-								<input type="email" class="form-control" name="email" value="{{ old('email') }}">
+								{!! Form::text('email', null, ['class'=>'form-control', 'type'=>'email']) !!}
+
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label class="col-md-4 control-label">Password</label>
+							{!! Form::label('password', 'Password', ['class'=>'col-md-4 control-label']) !!}
 							<div class="col-md-6">
-								<input type="password" class="form-control" name="password">
+								{!! Form::password('password', ['class'=>'form-control']) !!}
 							</div>
 						</div>
 

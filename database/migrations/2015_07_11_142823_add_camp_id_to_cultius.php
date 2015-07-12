@@ -27,7 +27,7 @@ class AddCampIdToCultius extends Migration {
 	public function down()
 	{
 		Schema::table('cultius', function(Blueprint $table) {
-			$table->dropForeign('camp_id');
+			$table->dropForeign('cultius_camp_id_foreign');
 			//$table->dropColumn('camp_id');
 		});
 

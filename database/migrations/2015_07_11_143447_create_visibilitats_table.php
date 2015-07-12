@@ -12,7 +12,13 @@ class CreateVisibilitatsTable extends Migration {
 	 */
 	public function up()
 	{
-		//
+		Schema::create('visibilitats', function(Blueprint $table)
+		{
+			$table->increments('id');								//id visibilitat
+			$table->string('nom')->unique();				//Tipus de visibilitat
+			$table->string('descripcio');						//descripcio
+			$table->timestamps();
+		});
 	}
 
 	/**
@@ -22,7 +28,7 @@ class CreateVisibilitatsTable extends Migration {
 	 */
 	public function down()
 	{
-		//
+		Schema::drop('visibilitats');
 	}
 
 }

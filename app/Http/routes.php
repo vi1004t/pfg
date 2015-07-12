@@ -22,12 +22,14 @@ Route::get('usuari', function(){
 	return view('privat.usuari', ['name' => 'Beniganim']);
 });
 
-Route::get('camp', function(){
+Route::resource('usuari/{user}/camp', 'CampController');
 
-	return View::make('privat.camp')->with('name', 'Quatretonda');
-});
+Route::get('usuari/{user}/camp/{camp}/cultiu/{cultiu}/timeline', 'CultiuController@timeline');
 
-Route::resource('cultiu', 'EventController');
+Route::resource('usuari/{user}/camp/{camp}/cultiu', 'CultiuController');
+
+Route::resource('usuari', 'UsersController');
+
 
 Route::get('galeria', function(){
 

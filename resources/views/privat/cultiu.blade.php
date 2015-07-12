@@ -1,4 +1,11 @@
 @extends('app')
+@section('head')
+<style>
+body{
+  overflow:hidden;
+}
+</style>
+@stop
 @section('mapa')
 
       <!-- BEGIN Timeline Embed -->

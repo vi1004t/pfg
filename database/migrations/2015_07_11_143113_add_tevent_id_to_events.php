@@ -27,7 +27,7 @@ class AddTeventIdToEvents extends Migration {
 	public function down()
 	{
 		Schema::table('events', function(Blueprint $table) {
-			$table->dropForeign('tevent_id');
+			$table->dropForeign('events_tevent_id_foreign');
 			$table->dropColumn('tevent_id');
 		});
 
