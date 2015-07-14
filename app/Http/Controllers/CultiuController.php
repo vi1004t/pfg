@@ -1,6 +1,6 @@
 <?php namespace App\Http\Controllers;
-
 use App\Http\Requests;
+use App\Http\Requests\CrearCultiuRequest;
 use App\Http\Controllers\Controller;
 use App\Cultiu;
 use App\Event;
@@ -26,7 +26,7 @@ class CultiuController extends Controller {
 	public function create($user, $camp)
 	{
 		$array = ['user' => $user, 'camp' => $camp ];
-		return view('crear.cultiu')->with('camp', $array);
+		return view('crear.cultiu')->with('array', $array);
 	}
 
 	/**
@@ -34,14 +34,14 @@ class CultiuController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store(Request $request)
+	public function store(CrearCultiuRequest $request)
 	{
 	//	dd($request->all());
-		if(strlen($request->headline)){
+/*		if(strlen($request->headline)){
 			if(strlen($request->text)){
-				if(strlen($request->startDate)){
+				if(strlen($request->startDate)){*/
 					$cultiu = new Cultiu($request->all());
-					$cultiu->planta_id = 1; 															//usuari normal
+					//$cultiu->planta_id = 1;
 					$cultiu->save();
 					$event = new Event();
 					$event->headline = "Inici";
@@ -51,8 +51,8 @@ class CultiuController extends Controller {
 					$cultiu->save();
 					$event->cultiu_id = $cultiu->id;
 					$event->save();
-					return redirect('usuari/'.$request->user_id.'/camp/'.$cultiu->camp_id.'/cultiu/'.$cultiu->id.'/');
-					}
+					return redirect('perfil/'.$request->user_id.'/camp/'.$cultiu->camp_id.'/cultiu/'.$cultiu->id);
+/*					}
 				else{
 					dd("LA data d'inici no pot estar buit");
 				}
@@ -64,7 +64,7 @@ class CultiuController extends Controller {
 		else{
 			dd("El nom no pot estar buit");
 		}
-
+*/
 	}
 
 	/**
@@ -73,9 +73,10 @@ class CultiuController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show()
+	public function show($user, $camp, $cultiu)
 	{
-		return view('privat.cultiu')->with('json', './timeline');
+		$dades = ['json' => $cultiu.'/timeline', 'cultiu' => $cultiu, 'user' => $user, 'camp' => $camp];
+		return view('privat.cultiu')->with('array', $dades);
 	}
 
 	/**

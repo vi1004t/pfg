@@ -31,9 +31,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 */
 	protected $hidden = ['password', 'remember_token'];
 
-	public function visibilitats()
-	{
-			return $this->belongsTo('App\Visibilitat', 'visibilitat_id', 'id');
+	public function userProfile(){
+
+		//return $this->belongsTo('App\SinonimiaPlanta', 'id', 'planta_id');
+		return $this->hasOne('App\UserProfile');
+
 	}
 
 }

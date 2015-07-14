@@ -22,8 +22,8 @@ body{
    mapTypeId: google.maps.MapTypeId.SATELLITE
    }
    map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-   if (typeof({{ $name }}) != '[object Array]'){
-     geocoder.geocode( { 'address': '{{ $name }}' }, function(results, status) {
+   if (typeof("{{ $dades['ubicacio'] }}") != '[object Array]'){
+     geocoder.geocode( { 'address': "{{ $dades['ubicacio'] }}" }, function(results, status) {
      if (status == google.maps.GeocoderStatus.OK) {
        map.setCenter(results[0].geometry.location);
        var marker = new google.maps.Marker({

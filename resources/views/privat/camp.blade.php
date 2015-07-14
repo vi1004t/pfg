@@ -1,7 +1,8 @@
 @extends('privat.mapa')
 
 @section('menuglobal')
-  <li><a href="/">Casa</a></li>
+  <li><a href="../">Casa</a></li>
+  <li><a href="{{ $dades['id'] }}/cultiu/create" data-src="{{ $dades['id'] }}/cultiu/create" data-toggle="modal" data-target="#flotant">Crear cultiu</a></li>
   <li><a href="/">Editar</a></li>
   @parent
 @stop

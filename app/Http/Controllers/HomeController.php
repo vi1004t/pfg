@@ -1,5 +1,11 @@
 <?php namespace App\Http\Controllers;
 
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
+use App\UserProfile;
+use Illuminate\Http\Request;
+use Auth;
+
 class HomeController extends Controller {
 
 	/*
@@ -21,6 +27,7 @@ class HomeController extends Controller {
 	public function __construct()
 	{
 		$this->middleware('auth');
+	//	$this->middleware('is_user');
 	}
 
 	/**
@@ -30,7 +37,12 @@ class HomeController extends Controller {
 	 */
 	public function index()
 	{
-		return view('home');
+		//return view('home');
+		$ubicacio = UserProfile::poblacio(UserProfile::perfilId(Auth::user()->id));
+		//dd(UserProfile::poblacio(UserProfile::perfilId(Auth::user()->id)));
+		$dades = ['ubicacio' => $ubicacio];
+		//dd($poblacio->toArray()[0]['poblacio']);
+		return view('home', ['dades' => $dades]);
 	}
 
 }

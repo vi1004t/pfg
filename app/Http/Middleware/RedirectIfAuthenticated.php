@@ -3,6 +3,7 @@
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\RedirectResponse;
+use App\UserProfile;
 
 class RedirectIfAuthenticated {
 
@@ -35,7 +36,7 @@ class RedirectIfAuthenticated {
 	{
 		if ($this->auth->check())
 		{
-			return new RedirectResponse(url('/home'));
+			return new RedirectResponse(url('/perfil/'. UserProfile::perfilId($this->auth->user()->id)));
 		}
 
 		return $next($request);

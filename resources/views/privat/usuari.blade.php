@@ -1,8 +1,7 @@
 @extends('privat.mapa')
 
 @section('menuglobal')
-  <li><a href="/">Crear camp</a></li>
-  <li><a href="/">Crear cultiu</a></li>
+  <li><a href="{{ $dades['id'] }}/camp/create">Crear camp</a></li>
   @parent
 @stop
 @section('esquerra')

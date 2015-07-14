@@ -7,9 +7,19 @@
       <div class="panel panel-default">
         <div class="panel-headding">Crear nou camp</div>
         <div class="panel-body">
-            {!! Form::open(['route' => 'usuari.{user}.camp.store', 'method' => 'POST']) !!}
+          @if (count($errors) > 0)
+            <div class="alert alert-danger">
+              <strong>Whoops!</strong> There were some problems with your input.<br><br>
+              <ul>
+                @foreach ($errors->all() as $error)
+                  <li>{{ $error }}</li>
+                @endforeach
+              </ul>
+            </div>
+          @endif
+            {!! Form::open(['route' => 'home.camp.store', 'method' => 'POST']) !!}
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
-            <input type="hidden" name="user_profile_id" value="{!! $user !!}">
+            {{-- <input type="hidden" name="user_profile_id" value="{!! $user !!}"> --}}
             <div class="form-group">
               {!! Form::label('nom', 'Nom') !!}
               {!! Form::text('nom', null, ['class' => 'form-control', 'type'=>'text']) !!}

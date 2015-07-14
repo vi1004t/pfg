@@ -17,23 +17,28 @@ Route::resource('plantes', 'PlantaController');
 
 Route::resource('enfermetats', 'EnfermetatController');
 
-Route::get('usuari', function(){
+Route::resource('perfil', 'UserProfileController');
 
-	return view('privat.usuari', ['name' => 'Beniganim']);
-});
+Route::resource('home/camp', 'CampController');
 
-Route::resource('usuari/{user}/camp', 'CampController');
+Route::get('perfil/{user}/camp/{camp}/cultiu/{cultiu}/timeline', 'CultiuController@timeline');
 
-Route::get('usuari/{user}/camp/{camp}/cultiu/{cultiu}/timeline', 'CultiuController@timeline');
+Route::resource('perfil/{user}/camp/{camp}/cultiu', 'CultiuController');
 
-Route::resource('usuari/{user}/camp/{camp}/cultiu', 'CultiuController');
+Route::post('perfil/{user}/camp/{camp}/cultiu/{cultiu}/event/postcrear', 'EventController@postcrear');
+
+Route::post('perfil/{user}/camp/{camp}/cultiu/{cultiu}/event/crear', 'EventController@crear');
+
+Route::resource('perfil/{user}/camp/{camp}/cultiu/{cultiu}/event', 'EventController');
 
 Route::resource('usuari', 'UsersController');
 
 
+
+
 Route::get('galeria', function(){
 
-	return view('privat.galeria');
+	return App\planta::listar();
 });
 
 Route::get('home', 'HomeController@index');

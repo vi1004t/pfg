@@ -1,18 +1,17 @@
-@extends('app')
-@section('head')
+<?php $__env->startSection('head'); ?>
 <style>
 body{
   overflow:hidden;
 }
 </style>
-@stop
-@section('menuglobal')
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('menuglobal'); ?>
   <li><a href="../">Al camp</a></li>
-  <li><a href="{{ $array['cultiu'] }}/event/create">Crear event</a></li>
+  <li><a href="<?php echo e($dades['id']); ?>/event/create">Crear event</a></li>
   <li><a href="/">Editar</a></li>
   @parent
-@stop
-@section('mapa')
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('mapa'); ?>
 
       <!-- BEGIN Timeline Embed -->
       <div id="timeline-embed"></div>
@@ -23,15 +22,15 @@ body{
          start_at_end:       true,
          lang:               'ca',
          start_zoom_adjust:  '4',
-         source: "{{ $array['json'] }}"
+         source: "<?php echo e($dades['json']); ?>"
          //source: "example_json.json"
         }
       </script>
       <script type="text/javascript" src="/js/storyjs-embed.js"></script>
       <!-- END Timeline Embed-->
 
-@stop
-@section('content')
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('content'); ?>
 <!--<div id="overlay4">
 
        <div>
@@ -40,8 +39,8 @@ body{
        </div>
        <div class="background"></div>
    </div>-->
-@stop
-@section('esquerra')
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('esquerra'); ?>
 <!-- Informació del camp -->
 <table id='infocamp'>
   <tr>
@@ -69,15 +68,16 @@ body{
     </td>
   </tr>
 </table>
-@stop
-@section('dreta')
-{!! Form::open(['action' => 'EventController@postcrear']) !!}
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('dreta'); ?>
+<?php echo Form::open(array('url' => 'foo/bar')); ?>
 
-    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-    <input type="hidden" name="user" value="{!! $array['user'] !!}">
-    <input type="hidden" name="camp" value="{!! $array['camp'] !!}">
-    <input type="hidden" name="cultiu" value="{!! $array['cultiu'] !!}">
-    {!! Form::select('tevent', App\Tevent::listar(), '') !!}
-    {!! Form::submit('Crea'); !!}
-{!! Form::close() !!}
-@stop
+    <?php echo Form::select('Event', array('-1' => 'Selecciona event', '0' => 'Malaltia'), '-1');; ?>
+
+    <?php echo Form::submit('Crea');; ?>
+
+<?php echo Form::close(); ?>
+
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('app', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

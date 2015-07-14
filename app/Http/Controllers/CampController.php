@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers;
 
 use App\Http\Requests;
+use App\Http\Requests\CrearCampRequest;
 use App\Http\Controllers\Controller;
 use App\Camp;
 use Illuminate\Http\Request;
@@ -24,9 +25,9 @@ class CampController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function create($user)
+	public function create()
 	{
-		return view('crear.camp')->with('user', $user);
+		return view('crear.camp');
 	}
 
 	/**
@@ -34,16 +35,16 @@ class CampController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store(Request $request)
+	public function store(CrearCampRequest $request)
 	{
 	//	dd($request->all());
-		if(strlen($request->nom)){
+/**		if(strlen($request->nom)){
 			if(strlen($request->descripcio)){
-				if(strlen($request->poble)){
+				if(strlen($request->poble)){ */
 					$camp = new Camp($request->all());
 					$camp->save();
-					return redirect('usuari/'.$camp->user_profile_id.'/camp/'.$camp->id.'/');
-					}
+					return redirect('perfil/'.$camp->user_profile_id.'/camp/'.$camp->id);
+/**					}
 				else{
 					dd("El poble no pot estar buit");
 				}
@@ -55,7 +56,7 @@ class CampController extends Controller {
 		else{
 			dd("El nom no pot estar buit");
 		}
-
+*/
 	}
 
 	/**
@@ -67,8 +68,9 @@ class CampController extends Controller {
 	public function show($user, $camp)
 	{
 		$ubicacio = Camp::select('poble')->where('id', '=', $camp)->get();
+		$dades = ['ubicacio' => $ubicacio->toArray()[0]['poble'], 'id' => $camp];
 		//dd($ubicacio->toArray()[0]['poble']);
-		return view('privat.camp')->with('name', $ubicacio->toArray()[0]['poble']);
+		return view('privat.camp')->with('dades', $dades);
 	}
 
 	/**

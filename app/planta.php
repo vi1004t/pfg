@@ -17,5 +17,14 @@ class planta extends Model {
 		return $this->hasMany('App\SinonimiesPlanta');
 
 	}
+	static public function listar()
+	{
+		$results = planta::select('id', 'especie')->get();
+		foreach ($results as $item) {
+			$llistat[$item->id] = $item->especie;
+		}
+		return $llistat;
+		//dd($result->toArray());
+	}
 
 }

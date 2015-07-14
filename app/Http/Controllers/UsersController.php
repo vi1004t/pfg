@@ -1,8 +1,10 @@
 <?php namespace App\Http\Controllers;
 
 use App\Http\Requests;
+use App\Http\Requests\CrearUsuariRequest;
 use App\Http\Controllers\Controller;
 use App\User;
+use App\UserProfile;
 //use Illuminate\Support\Facades\Request;
 
 use Illuminate\Http\Request;
@@ -19,7 +21,8 @@ class UsersController extends Controller {
 
 	public function index()
 	{
-		//
+		$result = User::all();
+		dd($result->toArray());
 	}
 
 	/**
@@ -37,21 +40,35 @@ class UsersController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store(Request $request)
+	public function store(CrearUsuariRequest $request)
 	{
-	//	dd($request->all());
-		if(strlen($request->nick)){
+		//dd($request->all());
+/**		if(strlen($request->nick)){
 			if(strlen($request->email)){
 				if(strlen($request->password)){
 					if(strlen($request->password2)){
-						if($request->password == $request->password2){
+						if($request->password == $request->password2){ */
 							$password = \Hash::make($request->password);
 							$user = new User($request->all());
 							$user->password = $password;
-							$user->acces = 1; 															//usuari normal
+							$user->acces = 1;
+							$userprofile = new UserProfile();
+							$userprofile->nom = "Inici";
+							$userprofile->cognoms = "Benvingut";
+							$userprofile->naiximent = '2011/02/02';
+							$userprofile->genere = 1;
+							$userprofile->cp = "Inici";
+							$userprofile->poblacio = "Benvingut";
+							$userprofile->provincia = "Inici";
+							$userprofile->pais = "Benvingut";
+							$userprofile->acces = 1;
+							$userprofile->visibilitat_id = 1;
 							$user->save();
+							$userprofile->user_id = $user->id;
+							$userprofile->save();
+							return redirect('perfil/'.$userprofile->id);													//usuari normal
 							dd($password);
-						}
+/**						}
 						else{
 							dd("El password i la seva confirmació no coincidixen");
 						}
@@ -72,7 +89,7 @@ class UsersController extends Controller {
 		else{
 			dd("El nick no pot estar buit");
 		}
-
+*/
 	}
 
 	/**

@@ -1,17 +1,22 @@
-@extends('app')
+@extends('privat.mapa')
 
-@section('content')
-<div class="container">
-	<div class="row">
-		<div class="col-md-10 col-md-offset-1">
-			<div class="panel panel-default">
-				<div class="panel-heading">Home</div>
+@section('menuglobal')
+  <li>{!! Html::linkAction('CampController@create', 'Crear camp') !!}</li>
+  @parent
+@stop
+@section('esquerra')
+	{{Auth::user()->email}}
+  <div class="btn btn-default" onclick="divLogin('camps')">
+    Els meus camps
+  </div>
+  <div id="camps" >
+    Hola
+  </div>
+@stop
+@section('dreta')
 
-				<div class="panel-body">
-					You are logged in!
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-@endsection
+
+  @for ($i = 0; $i < 20; $i++)
+    <li>The current value is {{ $i }}</li>
+  @endfor
+@stop

@@ -5,12 +5,22 @@
   <div class="row">
     <div class="col-md-10 col-md-offset-1">
       <div class="panel panel-default">
-        <div class="panel-headding">Crear nou camp</div>
+        <div class="panel-headding">Crear nou cultiu</div>
         <div class="panel-body">
-            {!! Form::open(['route' => 'usuari.{user}.camp.{camp}.cultiu.store', 'method' => 'POST']) !!}
+          @if (count($errors) > 0)
+            <div class="alert alert-danger">
+              <strong>Whoops!</strong> There were some problems with your input.<br><br>
+              <ul>
+                @foreach ($errors->all() as $error)
+                  <li>{{ $error }}</li>
+                @endforeach
+              </ul>
+            </div>
+          @endif
+            {!! Form::open(['route' => 'perfil.{user}.camp.{camp}.cultiu.store', 'method' => 'POST']) !!}
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
-            <input type="hidden" name="camp_id" value="{!! $camp['camp'] !!}">
-            <input type="hidden" name="user_id" value="{!! $camp['user'] !!}">
+            <input type="hidden" name="camp_id" value="{!! $array['camp'] !!}">
+            <input type="hidden" name="user_id" value="{!! $array['user'] !!}">
             <div class="form-group">
               {!! Form::label('headline', 'Nom') !!}
               {!! Form::text('headline', null, ['class' => 'form-control', 'type'=>'text']) !!}
@@ -23,6 +33,10 @@
             <div class="form-group">
               {!! Form::label('startDate', 'Data inici') !!}
               {!! Form::text('startDate', null, ['class' => 'form-control', 'type'=>'email']) !!}
+            </div>
+            <div class="form-group">
+              {!! Form::label('planta_id', 'Espècie') !!}
+              {!! Form::select('planta_id', App\planta::listar(), '', ['class' => 'form-control', 'type'=>'email']) !!}
             </div>
             <div class="form-group">
               {!! Form::label('visibilitat_id', 'Tipus de visibilitat') !!}

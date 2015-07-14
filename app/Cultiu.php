@@ -11,7 +11,7 @@ class Cultiu extends Model {
 	 */
 	protected $table = 'cultius';
 
-		protected $fillable = ['headline', 'text', 'startDate', 'visibilitat_id', 'camp_id'];
+		protected $fillable = ['headline', 'text', 'startDate', 'visibilitat_id', 'camp_id', 'planta_id'];
 
 	public function events(){
 
