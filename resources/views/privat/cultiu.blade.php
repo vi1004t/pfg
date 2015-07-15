@@ -7,8 +7,8 @@ body{
 </style>
 @stop
 @section('menuglobal')
-  <li><a href="../">Al camp</a></li>
-  <li><a href="{{ $array['cultiu'] }}/event/create">Crear event</a></li>
+  <li>{!! Html::linkAction('CampController@show', 'Al camp', array('id' => $dades['info']['camp_id'])) !!}</li>
+  <li><a href="{{ $dades['info']['id'] }}/event/create">Crear event</a></li>
   <li><a href="/">Editar</a></li>
   @parent
 @stop
@@ -23,7 +23,7 @@ body{
          start_at_end:       true,
          lang:               'ca',
          start_zoom_adjust:  '4',
-         source: "{{ $array['json'] }}"
+         source: "{{ $dades['json'] }}"
          //source: "example_json.json"
         }
       </script>
@@ -43,40 +43,26 @@ body{
 @stop
 @section('esquerra')
 <!-- Informació del camp -->
-<table id='infocamp'>
-  <tr>
-    <td>
-      <p>Lloc de la fotografia </p>
-    </td>
-    <td>
-      <p>Nom del cultiu </p>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <p>Nom del bancal al que pertany </p>
-    </td>
-    <td>
-      <p>15/05/2015 </p>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <p>Visibilitat del camp: </p>
-    </td>
-    <td>
-      <p>Amics </p>
-    </td>
-  </tr>
-</table>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-6 col-md-6 text-right">Lloc de la fotografia</div>
+    <div class="col-sm-6 col-md-6">{!! $dades['info']['nom'] !!}</div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6 col-md-6 text-right">Nom del cultiu</div>
+    <div class="col-sm-6 col-md-6">{!! $dades['info']['descripcio'] !!}</div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6 col-md-6 text-right">Visibilitat del camp:</div>
+    <div class="col-sm-6 col-md-6"></div>
+  </div>
+</div>
 @stop
 @section('dreta')
 {!! Form::open(['action' => 'EventController@postcrear']) !!}
 
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
-    <input type="hidden" name="user" value="{!! $array['user'] !!}">
-    <input type="hidden" name="camp" value="{!! $array['camp'] !!}">
-    <input type="hidden" name="cultiu" value="{!! $array['cultiu'] !!}">
+    <input type="hidden" name="cultiu" value="{!! $dades['info']['id'] !!}">
     {!! Form::select('tevent', App\Tevent::listar(), '') !!}
     {!! Form::submit('Crea'); !!}
 {!! Form::close() !!}

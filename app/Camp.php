@@ -17,5 +17,29 @@ class Camp extends Model {
 	{
 			return $this->belongsTo('App\Visibilitat', 'visibilitat_id', 'id');
 	}
+	static public function perfilId($id){
+		$result = Camp::select('user_profile_id')->where('id', '=', $id)->get();
+		if(!is_null($result)){
+			return $result->toArray()[0]['user_profile_id'];
+		}
+	}
+	static public function campsUsuari($id)
+	{
+		$results = Camp::select('id', 'nom', 'descripcio', 'poble')->where('user_profile_id', '=', $id)->get();
+		if(!is_null($results)){
+			foreach ($results as $item) {
+				$llistat[] = ['id' => $item->id, 'nom' => $item->nom, 'descripcio' => $item->descripcio, 'poble' => $item->poble];
+				return $llistat;
+			}
+		}
+	}
+	static public function infoCamp($id)
+	{
+		$results = Camp::select('id', 'nom', 'descripcio', 'poble')->where('id', '=', $id)->first();
+		if(!is_null($results)){
+			$camp = ['id' => $results->id, 'nom' => $results->nom, 'descripcio' => $results->descripcio, 'poble' => $results->poble];
+			return $camp;
+		}
+	}
 
 }

@@ -17,7 +17,7 @@
               </ul>
             </div>
           @endif
-            {!! Form::open(['route' => 'home.camp.store', 'method' => 'POST']) !!}
+            {!! Form::open(['action' => 'CampController@store', 'method' => 'POST']) !!}
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
             {{-- <input type="hidden" name="user_profile_id" value="{!! $user !!}"> --}}
             <div class="form-group">

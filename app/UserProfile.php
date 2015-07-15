@@ -19,13 +19,15 @@ class UserProfile extends Model {
 		}
 		static public function poblacio($id){
 			$result = UserProfile::select('poblacio')->where('id', '=', $id)->get();
-			return $result->toArray()[0]['poblacio'];
-
+			if(!is_null($result)){
+				return $result->toArray()[0]['poblacio'];
+			}
 		}
 		static public function perfilId($id){
 			$result = UserProfile::select('id')->where('user_id', '=', $id)->get();
-			return $result->toArray()[0]['id'];
-
+			if(!is_null($result)){
+				return $result->toArray()[0]['id'];
+			}
 		}
 
 }

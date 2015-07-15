@@ -4,7 +4,8 @@ use Closure;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\RedirectResponse;
 use App\UserProfile;
-class IsUser {
+use App\Cultiu;
+class IsCultiu {
 
 	public function __construct(Guard $auth){
 
@@ -20,11 +21,7 @@ class IsUser {
 	 */
 	public function handle($request, Closure $next)
 	{
-	//	dd("hola");
-	//	dd(app()->router->getCurrentRoute()->getParameter('perfil'));
-		//dd($this->auth->user()->id);
-//dd(UserProfile::perfilId($this->auth->user()->id));
-		if (UserProfile::perfilId($this->auth->user()->id) === app()->router->getCurrentRoute()->getParameter('id')){
+		if (UserProfile::perfilId($this->auth->user()->id) === Cultiu::perfilId(app()->router->getCurrentRoute()->getParameter('cultiu'))){
 			return $next($request);
 		}
 		else{
@@ -34,8 +31,6 @@ class IsUser {
 			}
 			else
 			{
-				dd("NO");
-				//return redirect()->guest('/');
 				return new RedirectResponse(url('/home'));
 			}
 		}

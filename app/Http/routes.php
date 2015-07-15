@@ -17,13 +17,15 @@ Route::resource('plantes', 'PlantaController');
 
 Route::resource('enfermetats', 'EnfermetatController');
 
-Route::resource('perfil', 'UserProfileController');
-
 Route::resource('home/camp', 'CampController');
 
-Route::get('perfil/{user}/camp/{camp}/cultiu/{cultiu}/timeline', 'CultiuController@timeline');
+Route::get('home/cultiu/{cultiu}/timeline', 'CultiuController@timeline');
 
-Route::resource('perfil/{user}/camp/{camp}/cultiu', 'CultiuController');
+Route::resource('home/cultiu', 'CultiuController');
+
+//a partir d'ací encara no està OK
+
+//Route::resource('perfil', 'UserProfileController');
 
 Route::post('perfil/{user}/camp/{camp}/cultiu/{cultiu}/event/postcrear', 'EventController@postcrear');
 
@@ -31,14 +33,15 @@ Route::post('perfil/{user}/camp/{camp}/cultiu/{cultiu}/event/crear', 'EventContr
 
 Route::resource('perfil/{user}/camp/{camp}/cultiu/{cultiu}/event', 'EventController');
 
-Route::resource('usuari', 'UsersController');
+//Route::resource('usuari', 'UsersController');
 
 
 
 
 Route::get('galeria', function(){
 
-	return App\planta::listar();
+	//return view('proves.prova1');
+		return App\Camp::campsUsuari(1);
 });
 
 Route::get('home', 'HomeController@index');

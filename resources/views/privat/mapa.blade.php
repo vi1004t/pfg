@@ -36,10 +36,13 @@ body{
      });
    }
 
+
    }
 
    google.maps.event.addDomListener(window, 'load', initialize);
    </script>
+ 
+   @yield('dibuixar')
 @stop
 @section('mapa')
 	<div id="map-canvas"></div>

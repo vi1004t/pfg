@@ -4,10 +4,17 @@ use App\Http\Requests;
 use App\Http\Requests\CrearCampRequest;
 use App\Http\Controllers\Controller;
 use App\Camp;
+use App\Cultiu;
 use Illuminate\Http\Request;
+use Auth;
 
 class CampController extends Controller {
 
+	public function __construct()
+	{
+		$this->middleware('auth');
+		$this->middleware('is_camp', ['only' => ['index', 'edit', 'show']]);
+	}
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -65,10 +72,22 @@ class CampController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($user, $camp)
+	public function show($camp)
 	{
-		$ubicacio = Camp::select('poble')->where('id', '=', $camp)->get();
-		$dades = ['ubicacio' => $ubicacio->toArray()[0]['poble'], 'id' => $camp];
+		$llistat = "";
+		$info = Camp::infoCamp($camp);
+		$camps = Cultiu::cultiusCamp($camp);
+		if(!is_null($camps)){
+			foreach ($camps as $item) {
+				//$llistat[] = '<tr><td><a href="/home/cultiu/'.$item['id'].'">'.$item['nom'].'</a></td><td>'.$item['descripcio'].'</td></tr>';
+				$llistat[] = '
+				<div class="row">
+			    <div class="col-sm-4 col-md-4"><a href="/home/cultiu/'.$item['id'].'">'.$item['nom'].'</a></div>
+			    <div class="col-sm-8 col-md-8">'.$item['descripcio'].'</div>
+			  </div>';
+			}
+		}
+		$dades = ['ubicacio' => $info['poble'], 'info' => $info, 'id' => $camp, 'cultius' => $llistat];
 		//dd($ubicacio->toArray()[0]['poble']);
 		return view('privat.camp')->with('dades', $dades);
 	}

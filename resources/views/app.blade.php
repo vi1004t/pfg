@@ -19,7 +19,6 @@
 		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
-	<script src="js/general.js"></script>
 	<script type='text/javascript'>//<![CDATA[
 $(window).load(function(){
 $('a.modalButton').on('click', function(e) {
@@ -91,6 +90,7 @@ $('a.modalButton').on('click', function(e) {
 	</nav>
 	<div>
 	  <div>
+			{{ date("d/M"). ' Eixida : ' .date_sunrise(time(), SUNFUNCS_RET_STRING, 38.4, -9, 90, 1) . ' Posta: ' .date_sunset(time(), SUNFUNCS_RET_STRING, 38.4, -9, 90, 1)}}
 	    <marquee scrollamount="1">Default marquee text scrolls from right to left</marquee>
 	  </div>
 	</div>

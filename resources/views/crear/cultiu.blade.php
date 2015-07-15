@@ -17,10 +17,10 @@
               </ul>
             </div>
           @endif
-            {!! Form::open(['route' => 'perfil.{user}.camp.{camp}.cultiu.store', 'method' => 'POST']) !!}
+            {!! Form::open(['action' => 'CultiuController@store', 'method' => 'POST']) !!}
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <input type="hidden" name="camp_id" value="{!! $array['camp'] !!}">
-            <input type="hidden" name="user_id" value="{!! $array['user'] !!}">
+            <input type="hidden" name="user_profile_id" value="{!! $array['user'] !!}">
             <div class="form-group">
               {!! Form::label('headline', 'Nom') !!}
               {!! Form::text('headline', null, ['class' => 'form-control', 'type'=>'text']) !!}

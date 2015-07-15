@@ -4,10 +4,17 @@ use App\Http\Requests\CrearCultiuRequest;
 use App\Http\Controllers\Controller;
 use App\Cultiu;
 use App\Event;
+use App\UserProfile;
 use Illuminate\Http\Request;
 
 class CultiuController extends Controller {
 
+	public function __construct()
+	{
+		$this->middleware('auth');
+		$this->middleware('is_cultiu', ['only' => ['index', 'edit', 'show']]);
+		$this->middleware('is_camp_defined', ['only' => ['create']]);
+	}
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -23,9 +30,10 @@ class CultiuController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function create($user, $camp)
+	public function create()
 	{
-		$array = ['user' => $user, 'camp' => $camp ];
+		$array = ['user' => UserProfile::perfilId(\Auth::user()->id), 'camp' => \Input::get('id')];
+
 		return view('crear.cultiu')->with('array', $array);
 	}
 
@@ -47,11 +55,12 @@ class CultiuController extends Controller {
 					$event->headline = "Inici";
 					$event->text = "Benvingut";
 					$event->startDate = $cultiu->startDate;
+					$event->endDate = $cultiu->startDate;
 					$event->tevent_id = 1;
 					$cultiu->save();
 					$event->cultiu_id = $cultiu->id;
 					$event->save();
-					return redirect('perfil/'.$request->user_id.'/camp/'.$cultiu->camp_id.'/cultiu/'.$cultiu->id);
+					return redirect('home/cultiu/'.$cultiu->id);
 /*					}
 				else{
 					dd("LA data d'inici no pot estar buit");
@@ -73,10 +82,12 @@ class CultiuController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($user, $camp, $cultiu)
+	public function show($cultiu)
 	{
-		$dades = ['json' => $cultiu.'/timeline', 'cultiu' => $cultiu, 'user' => $user, 'camp' => $camp];
-		return view('privat.cultiu')->with('array', $dades);
+		$info = Cultiu::infoCultiu($cultiu);
+		//$camps = Event::eventsCultiu($cultiu);
+		$dades = ['json' => $cultiu.'/timeline', 'info' => $info];
+		return view('privat.cultiu')->with('dades', $dades);
 	}
 
 	/**
@@ -112,7 +123,7 @@ class CultiuController extends Controller {
 		//
 	}
 
-	public function timeline($user, $camp, $cultiu)
+	public function timeline($cultiu)
 	{
 		//dd($id);
 		$result = Cultiu::find($cultiu)->With('events')->get();
