@@ -22,7 +22,8 @@
   <li>{!! Html::linkAction('CampController@create', 'Crear camp') !!}</li>
   @parent
 @stop
-@section('esquerra')
+@section('content')
+<div id="esquerra">
   <div class="btn btn-default" onclick="divLogin('llistat_ocult')">
     Els meus camps
   </div>
@@ -42,10 +43,10 @@
       @endif
     </div>
   </div>
-
-@stop
-@section('dreta')
+</div>
+<div id="dreta">
   @for ($i = 0; $i < 20; $i++)
     <li>The current value is {{ $i }}</li>
   @endfor
 @stop
+</div>

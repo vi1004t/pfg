@@ -5,6 +5,7 @@ use App\Http\Requests\CrearCampRequest;
 use App\Http\Controllers\Controller;
 use App\Camp;
 use App\Cultiu;
+use App\UserProfile;
 use Illuminate\Http\Request;
 use Auth;
 
@@ -34,7 +35,9 @@ class CampController extends Controller {
 	 */
 	public function create()
 	{
-		return view('crear.camp');
+		$ubicacio = UserProfile::poblacio(UserProfile::perfilId(Auth::user()->id));
+		$dades = ['ubicacio' => $ubicacio];
+		return view('crear.camp', ['dades' => $dades]);
 	}
 
 	/**
@@ -44,26 +47,13 @@ class CampController extends Controller {
 	 */
 	public function store(CrearCampRequest $request)
 	{
-	//	dd($request->all());
-/**		if(strlen($request->nom)){
-			if(strlen($request->descripcio)){
-				if(strlen($request->poble)){ */
+		//dd($request->all());
+
 					$camp = new Camp($request->all());
+					$camp->user_profile_id = UserProfile::perfilId(Auth::user()->id);
+					//$camp->ubicacio =$request->ubicacio->toJson();
 					$camp->save();
-					return redirect('perfil/'.$camp->user_profile_id.'/camp/'.$camp->id);
-/**					}
-				else{
-					dd("El poble no pot estar buit");
-				}
-			}
-			else{
-				dd("LA descripcio no pot estar buit");
-			}
-		}
-		else{
-			dd("El nom no pot estar buit");
-		}
-*/
+					return redirect('home/camp/'.$camp->id);
 	}
 
 	/**
@@ -76,6 +66,39 @@ class CampController extends Controller {
 	{
 		$llistat = "";
 		$info = Camp::infoCamp($camp);
+		if(!is_null($info['ubicacio'])){
+			$coordenades = "
+			<script>
+			function dibuixa() {
+				var triangleCoords = [";
+
+			$temporal = explode(",", $info['ubicacio']);
+			for($i = 0; $i < count($temporal); $i++){
+				$coordenades = $coordenades . 'new google.maps.LatLng'. $temporal[$i] . ',' . $temporal[$i+1] . ',';
+				$i++;
+			}
+			$coordenades = $coordenades . "];
+
+					bermudaTriangle = new google.maps.Polygon({
+						paths: triangleCoords,
+						strokeColor: '#FF0000',
+						strokeOpacity: 0.8,
+						strokeWeight: 3,
+						fillColor: '#FF0000',
+						fillOpacity: 0.35
+					});
+
+					bermudaTriangle.setMap(map);
+
+			}
+			google.maps.event.addDomListener(window, 'load', dibuixa);
+			</script>	";
+		}
+		else{
+			$coordenades = "";
+		}
+
+		//dd($coordenades);
 		$camps = Cultiu::cultiusCamp($camp);
 		if(!is_null($camps)){
 			foreach ($camps as $item) {
@@ -87,7 +110,7 @@ class CampController extends Controller {
 			  </div>';
 			}
 		}
-		$dades = ['ubicacio' => $info['poble'], 'info' => $info, 'id' => $camp, 'cultius' => $llistat];
+		$dades = ['ubicacio' => $info['poble'], 'info' => $info, 'id' => $camp, 'cultius' => $llistat, 'coordenades' => $coordenades];
 		//dd($ubicacio->toArray()[0]['poble']);
 		return view('privat.camp')->with('dades', $dades);
 	}

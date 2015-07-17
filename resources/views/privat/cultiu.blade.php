@@ -31,6 +31,7 @@ body{
       <!-- END Timeline Embed-->
 
 @stop
+
 @section('content')
 <!--<div id="overlay4">
 
@@ -40,25 +41,25 @@ body{
        </div>
        <div class="background"></div>
    </div>-->
-@stop
-@section('esquerra')
+
+<div id="esquerra">
 <!-- Informació del camp -->
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-sm-6 col-md-6 text-right">Lloc de la fotografia</div>
-    <div class="col-sm-6 col-md-6">{!! $dades['info']['nom'] !!}</div>
-  </div>
-  <div class="row">
-    <div class="col-sm-6 col-md-6 text-right">Nom del cultiu</div>
-    <div class="col-sm-6 col-md-6">{!! $dades['info']['descripcio'] !!}</div>
-  </div>
-  <div class="row">
-    <div class="col-sm-6 col-md-6 text-right">Visibilitat del camp:</div>
-    <div class="col-sm-6 col-md-6"></div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-6 col-md-6 text-right">Lloc de la fotografia</div>
+      <div class="col-sm-6 col-md-6">{!! $dades['info']['nom'] !!}</div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6 col-md-6 text-right">Nom del cultiu</div>
+      <div class="col-sm-6 col-md-6">{!! $dades['info']['descripcio'] !!}</div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6 col-md-6 text-right">Visibilitat del camp:</div>
+      <div class="col-sm-6 col-md-6"></div>
+    </div>
   </div>
 </div>
-@stop
-@section('dreta')
+<div id="dreta">
 {!! Form::open(['action' => 'EventController@postcrear']) !!}
 
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -66,4 +67,5 @@ body{
     {!! Form::select('tevent', App\Tevent::listar(), '') !!}
     {!! Form::submit('Crea'); !!}
 {!! Form::close() !!}
+<div>
 @stop

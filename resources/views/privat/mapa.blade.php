@@ -2,11 +2,6 @@
 <!-- http://norfipc.com/inf/javascript-como-escribir-texto-elementos-paginas-web.html -->
 
 @section('head')
-<style>
-body{
-  overflow:hidden;
-}
-</style>
 <script type="text/javascript"
    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAr79Hev0xfyNdjMx8fmCZqzARoZ3MnCjs">
    </script>
@@ -41,8 +36,6 @@ body{
 
    google.maps.event.addDomListener(window, 'load', initialize);
    </script>
- 
-   @yield('dibuixar')
 @stop
 @section('mapa')
 	<div id="map-canvas"></div>

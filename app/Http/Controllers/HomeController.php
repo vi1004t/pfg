@@ -42,6 +42,7 @@ class HomeController extends Controller {
 		$llistat = "";
 		$ubicacio = UserProfile::poblacio(UserProfile::perfilId(Auth::user()->id));
 		$camps = Camp::campsUsuari(UserProfile::perfilId(Auth::user()->id));
+		//dd($camps);
 		if(!is_null($camps)){
 			foreach ($camps as $item) {
 				//$llistat[] = '<tr><td><a href="/home/camp/'.$item['id'].'">'.$item['nom'].'</a></td><td>'.$item['descripcio'].'</td><td>'.$item['poble'].'</td></tr>';

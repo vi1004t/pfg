@@ -11,7 +11,7 @@ class Camp extends Model {
 	 */
 	protected $table = 'camps';
 
-	protected $fillable = ['nom', 'descripcio', 'poble', 'visibilitat_id', 'user_profile_id'];
+	protected $fillable = ['nom', 'descripcio', 'poble', 'visibilitat_id', 'user_profile_id', 'ubicacio'];
 
 	public function visibilitats()
 	{
@@ -26,18 +26,19 @@ class Camp extends Model {
 	static public function campsUsuari($id)
 	{
 		$results = Camp::select('id', 'nom', 'descripcio', 'poble')->where('user_profile_id', '=', $id)->get();
+
 		if(!is_null($results)){
 			foreach ($results as $item) {
 				$llistat[] = ['id' => $item->id, 'nom' => $item->nom, 'descripcio' => $item->descripcio, 'poble' => $item->poble];
+			}
 				return $llistat;
 			}
-		}
 	}
 	static public function infoCamp($id)
 	{
-		$results = Camp::select('id', 'nom', 'descripcio', 'poble')->where('id', '=', $id)->first();
+		$results = Camp::select('id', 'nom', 'descripcio', 'poble', 'ubicacio')->where('id', '=', $id)->first();
 		if(!is_null($results)){
-			$camp = ['id' => $results->id, 'nom' => $results->nom, 'descripcio' => $results->descripcio, 'poble' => $results->poble];
+			$camp = ['id' => $results->id, 'nom' => $results->nom, 'descripcio' => $results->descripcio, 'poble' => $results->poble, 'ubicacio' => $results->ubicacio];
 			return $camp;
 		}
 	}

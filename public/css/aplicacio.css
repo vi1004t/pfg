@@ -23,7 +23,7 @@
     overflow-y: auto
   }
   #dreta{
-    float: left;
+    float: right;
     width: 50%;
     height: 37%;
     overflow-y: scroll
