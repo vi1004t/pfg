@@ -12,7 +12,7 @@ body{
 <script type="text/javascript">
 var drawingManager;
 var selectedShape;
-var coordenades = "sssss";
+var coordenades = "";
 
 function clearSelection() {
   if (selectedShape) {
@@ -127,7 +127,7 @@ google.maps.event.addDomListener(window, 'load', xxx);
             {!! Form::open(['action' => 'CampController@store', 'method' => 'POST', 'id' => 'map-form']) !!}
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
             {{-- <input type="hidden" name="user_profile_id" value="{!! $user !!}"> --}}
-            <input type="hidden" name="ubicacio" id="map-coords" value=""/>
+            <input type="hidden" name="punts" id="map-coords" value=""/>
 
               <div class="row">
                 <div class="col-sm-6 col-md-6">

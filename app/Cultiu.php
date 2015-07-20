@@ -29,8 +29,11 @@ class Cultiu extends Model {
 			return $result->toArray()[0]['user_profile_id'];
 		}
 	}
+
+
 	static public function cultiusCamp($id)
 	{
+
 		$results = Cultiu::select('id', 'headline', 'text')->where('camp_id', '=', $id)->get();
 		if(!is_null($results)){
 			foreach ($results as $item) {

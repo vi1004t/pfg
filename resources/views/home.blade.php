@@ -1,7 +1,24 @@
 @extends('privat.mapa')
 @section('head')
 @parent
+<script>
+function dibuixar(){
+  @foreach ($dades["coordenades"] as $item)
+    var coords = [{!!$item["punts"]!!}]
+    var p = new google.maps.Polygon({
+        paths:  coords,
+        strokeWeight: 3,
+        fillColor: '{!!$item["color"]!!}',
+        fillOpacity: 0.35,
+        strokeColor: '{!!$item["color"]!!}',
+        strokeOpacity: 0.8,
 
+    });
+    p.setMap(map);
+  @endforeach
+}
+google.maps.event.addDomListener(window, 'load', dibuixar);
+</script>
 <script>
   var clic = 1;
   function divLogin($id){

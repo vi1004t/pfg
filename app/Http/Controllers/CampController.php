@@ -8,6 +8,7 @@ use App\Cultiu;
 use App\UserProfile;
 use Illuminate\Http\Request;
 use Auth;
+use DB;
 
 class CampController extends Controller {
 
@@ -36,7 +37,7 @@ class CampController extends Controller {
 	public function create()
 	{
 		$ubicacio = UserProfile::poblacio(UserProfile::perfilId(Auth::user()->id));
-		$dades = ['ubicacio' => $ubicacio];
+		$dades = ['ubicacio' => $ubicacio, 'ubicacio_centre' => 'no_valor'];
 		return view('crear.camp', ['dades' => $dades]);
 	}
 
@@ -47,13 +48,35 @@ class CampController extends Controller {
 	 */
 	public function store(CrearCampRequest $request)
 	{
-		//dd($request->all());
 
-					$camp = new Camp($request->all());
-					$camp->user_profile_id = UserProfile::perfilId(Auth::user()->id);
-					//$camp->ubicacio =$request->ubicacio->toJson();
-					$camp->save();
-					return redirect('home/camp/'.$camp->id);
+		$camp = new Camp($request->all());
+		if(!($request->punts == "")){
+			dd($request->poligon);
+			$centre = GoogleMapsController::calcularCentrePoligon($request->punts);
+			$arraycoords = GoogleMapsController::stringToArray($request->punts);
+			//es forma el string per a insertar en mysql el linestring. Entre punt i
+			//punt s'inserta una ',' excepte l'ultim punt (no es guarda si acaba en ',')
+			$string = 'GeomFromText(\'LINESTRING(';
+			for($i = 0; $i < count($arraycoords); $i++){
+				$string = $string . $arraycoords[$i] . ' ';
+				$i++;
+				if(!($i < (count($arraycoords)-1))){
+					$string = $string . $arraycoords[$i];
+				}
+				else{
+					$string = $string . $arraycoords[$i] .',';
+				}
+			}
+
+			$string = $string . ')\')';
+			$camp->poligon = DB::raw($string);
+			$camp->centre = DB::raw('PointFromText(\'POINT('.$centre[0].' '.$centre[1].')\')');
+		}
+
+
+		$camp->user_profile_id = UserProfile::perfilId(Auth::user()->id);
+		$camp->save();
+		return redirect('home/camp/'.$camp->id);
 	}
 
 	/**
@@ -65,53 +88,44 @@ class CampController extends Controller {
 	public function show($camp)
 	{
 		$llistat = "";
+		$centre = "";
 		$info = Camp::infoCamp($camp);
-		if(!is_null($info['ubicacio'])){
-			$coordenades = "
-			<script>
-			function dibuixa() {
-				var triangleCoords = [";
-
-			$temporal = explode(",", $info['ubicacio']);
-			for($i = 0; $i < count($temporal); $i++){
-				$coordenades = $coordenades . 'new google.maps.LatLng'. $temporal[$i] . ',' . $temporal[$i+1] . ',';
-				$i++;
+		$ubicacio = Camp::coordenades($camp);
+		if(!is_null($ubicacio['ubicacio'])){
+			$coordenades[] = ['punts' => GoogleMapsController::formarPoligon($ubicacio['ubicacio']), 'color' => '#FF0000', 'info' => '<b>Hola</b><br><a href="http://www.google.es">link</a>'];
+			$veins = Camp::campsVeins($camp);
+			foreach ($veins as $vei) {
+				$temp = Camp::coordenades($vei->id);
+				$coordenades[] = ['punts' => GoogleMapsController::formarPoligon($temp['ubicacio']), 'color' => '#000000', 'info' => 'no_valor'];
 			}
-			$coordenades = $coordenades . "];
+			//dd($coordenades);
+			//$coordenades[] = GoogleMapsController::formarPoligon($ubicacio['ubicacio']);
 
-					bermudaTriangle = new google.maps.Polygon({
-						paths: triangleCoords,
-						strokeColor: '#FF0000',
-						strokeOpacity: 0.8,
-						strokeWeight: 3,
-						fillColor: '#FF0000',
-						fillOpacity: 0.35
-					});
+			//dd($coordenades);
+			/*$coordenades = GoogleMapsController::dibuixarCamp([$ubicacio['ubicacio']]);
 
-					bermudaTriangle.setMap(map);
-
+			$coordenades = $coordenades . GoogleMapsController::eventOnClick("http://pfg.org/home/camp/17", "camp0");
+			$veins = Camp::campsVeins($camp);
+			foreach ($veins as $vei) {
+				$temp = Camp::coordenades($vei->id);
+				$poligon[] = $temp['ubicacio'];
 			}
-			google.maps.event.addDomListener(window, 'load', dibuixa);
-			</script>	";
+			$coordenades = $coordenades . GoogleMapsController::dibuixarCamp($poligon, '#000000');
+			*/
+			$ubicacio_centre['y'] = $ubicacio['centrey'];
+			$ubicacio_centre['x'] = $ubicacio['centrex'];
 		}
 		else{
-			$coordenades = "";
+			$coordenades = null;
+			$ubicacio_centre = 'no_valor';
 		}
 
-		//dd($coordenades);
-		$camps = Cultiu::cultiusCamp($camp);
-		if(!is_null($camps)){
-			foreach ($camps as $item) {
-				//$llistat[] = '<tr><td><a href="/home/cultiu/'.$item['id'].'">'.$item['nom'].'</a></td><td>'.$item['descripcio'].'</td></tr>';
-				$llistat[] = '
-				<div class="row">
-			    <div class="col-sm-4 col-md-4"><a href="/home/cultiu/'.$item['id'].'">'.$item['nom'].'</a></div>
-			    <div class="col-sm-8 col-md-8">'.$item['descripcio'].'</div>
-			  </div>';
-			}
+		$cultius = Cultiu::cultiusCamp($camp);
+		if(!is_null($cultius)){
+			$llistat = CampController::llistarCultius($cultius);
+//dd($llistat);
 		}
-		$dades = ['ubicacio' => $info['poble'], 'info' => $info, 'id' => $camp, 'cultius' => $llistat, 'coordenades' => $coordenades];
-		//dd($ubicacio->toArray()[0]['poble']);
+		$dades = ['ubicacio' => $info['poble'], 'ubicacio_centre' => $ubicacio_centre, 'info' => $info, 'id' => $camp, 'cultius' => $llistat, 'coordenades' => $coordenades];
 		return view('privat.camp')->with('dades', $dades);
 	}
 
@@ -147,5 +161,19 @@ class CampController extends Controller {
 	{
 		//
 	}
+
+	private function llistarCultius($dades){
+		foreach ($dades as $item) {
+			//$llistat[] = '<tr><td><a href="/home/cultiu/'.$item['id'].'">'.$item['nom'].'</a></td><td>'.$item['descripcio'].'</td></tr>';
+			$llistat[] = '
+			<div class="row">
+				<div class="col-sm-4 col-md-4"><a href="/home/cultiu/'.$item['id'].'">'.$item['nom'].'</a></div>
+				<div class="col-sm-8 col-md-8">'.$item['descripcio'].'</div>
+			</div>';
+		}
+		return $llistat;
+	}
+
+
 
 }

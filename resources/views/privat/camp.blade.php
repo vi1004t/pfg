@@ -2,7 +2,34 @@
 
 @section('head')
 @parent
-{!! $dades['coordenades']!!}
+<script>
+function dibuixar(){
+  @foreach ($dades["coordenades"] as $item)
+    var coords = [{!!$item["punts"]!!}]
+    var p = new google.maps.Polygon({
+        paths:  coords,
+        strokeWeight: 3,
+        fillColor: '{!!$item["color"]!!}',
+        fillOpacity: 0.35,
+        strokeColor: '{!!$item["color"]!!}',
+        strokeOpacity: 0.8,
+
+    });
+    p.setMap(map);
+    @if($item['info'] != 'no_valor')
+    google.maps.event.addListener(p, 'click', function(event){
+      infoWindow.setContent('{!!$item["info"]!!}');
+      infoWindow.setPosition(event.latLng);
+      infoWindow.open(map);
+
+    });
+    infoWindow = new google.maps.InfoWindow();
+    @endif
+  @endforeach
+}
+
+google.maps.event.addDomListener(window, 'load', dibuixar);
+</script>
 @stop
 @section('menuglobal')
   <li><a href="../">Casa</a></li>
