@@ -23,23 +23,26 @@ class Cultiu extends Model {
 	{
 			return $this->belongsTo('App\Visibilitat', 'visibilitat_id', 'id');
 	}
+
 	static public function perfilId($id){
+		//dd($id);
 		$result = Cultiu::select('user_profile_id')->where('id', '=', $id)->get();
 		if(!is_null($result)){
 			return $result->toArray()[0]['user_profile_id'];
 		}
 	}
 
-
 	static public function cultiusCamp($id)
 	{
-
+		$llistat = null;
 		$results = Cultiu::select('id', 'headline', 'text')->where('camp_id', '=', $id)->get();
 		if(!is_null($results)){
 			foreach ($results as $item) {
-				$llistat[] = ['id' => $item->id, 'nom' => $item->headline, 'descripcio' => $item->text];
-				return $llistat;
+				$llistat[] = ['id' => $item->id,
+											'nom' => $item->headline,
+											'descripcio' => $item->text];
 			}
+			return $llistat;
 		}
 	}
 
@@ -53,9 +56,40 @@ class Cultiu extends Model {
 	{
 		$results = Cultiu::select('id', 'headline', 'text', 'camp_id')->where('id', '=', $id)->first();
 		if(!is_null($results)){
-			$cultiu = ['id' => $results->id, 'nom' => $results->headline, 'descripcio' => $results->text, 'camp_id' => $results->camp_id];
+			$cultiu = ['id' => $results->id,
+								'nom' => $results->headline,
+								'descripcio' => $results->text,
+								'camp_id' => $results->camp_id];
 			return $cultiu;
 		}
 	}
 
+	static private function getVisibilitat($id){
+		$result = Cultiu::select('visibilitat_id')->where('id', '=', $id)->get();
+		if(!is_null($result)){
+			return $result->toArray()[0]['visibilitat_id'];
+		}
+	}
+
+	static public function esVisible($id, $profileIdVisualitzador){
+		if(Cultiu::perfilId($id)==$profileIdVisualitzador){
+			return true;
+		}
+		else{
+			switch (Camp::getVisibilitat($id)) {
+				case 1://Tots
+					return true;
+					break;
+				case 2://Ningú
+					return false;
+					break;
+				case 3://Amics
+					dd('no definit');
+					break;
+				default:
+					return false;
+					break;
+			}
+		}
+	}
 }

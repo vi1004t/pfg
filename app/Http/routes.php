@@ -17,6 +17,8 @@ Route::resource('plantes', 'PlantaController');
 
 Route::resource('enfermetats', 'EnfermetatController');
 
+//Route::match(['get', 'post'], 'home/camp/{camp}', 'CampController@show');
+
 Route::resource('home/camp', 'CampController');
 
 Route::get('home/cultiu/{cultiu}/timeline', 'CultiuController@timeline');

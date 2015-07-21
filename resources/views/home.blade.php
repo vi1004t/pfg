@@ -15,8 +15,18 @@ function dibuixar(){
 
     });
     p.setMap(map);
+    @if($item['info'] != 'no_valor')
+    google.maps.event.addListener(p, 'click', function(event){
+      infoWindow.setContent('{!!$item["info"]!!}');
+      infoWindow.setPosition(event.latLng);
+      infoWindow.open(map);
+
+    });
+    infoWindow = new google.maps.InfoWindow();
+    @endif
   @endforeach
 }
+
 google.maps.event.addDomListener(window, 'load', dibuixar);
 </script>
 <script>

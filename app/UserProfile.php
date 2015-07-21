@@ -30,4 +30,11 @@ class UserProfile extends Model {
 			}
 		}
 
+		static public function userId($id){
+			$result = UserProfile::select('user_id')->where('id', '=', $id)->get();
+			if(!is_null($result)){
+				return $result->toArray()[0]['user_id'];
+			}
+		}
+
 }

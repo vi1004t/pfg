@@ -43,7 +43,10 @@ class Camp extends Model {
 		//dd($results->toArray());
 		if(!$results->isEmpty()){
 			foreach ($results as $item) {
-				$llistat[] = ['id' => $item->id, 'nom' => $item->nom, 'descripcio' => $item->descripcio, 'poble' => $item->poble];
+				$llistat[] = ['id' => $item->id,
+											'nom' => $item->nom,
+											'descripcio' => $item->descripcio,
+											'poble' => $item->poble];
 			}
 				return $llistat;
 			}
@@ -58,8 +61,18 @@ class Camp extends Model {
 	{
 		$results = Camp::select('id', 'nom', 'descripcio', 'poble')->where('id', '=', $id)->first();
 		if(!is_null($results)){
-			$camp = ['id' => $results->id, 'nom' => $results->nom, 'descripcio' => $results->descripcio, 'poble' => $results->poble];
+			$camp = ['id' => $results->id,
+							'nom' => $results->nom,
+							'descripcio' => $results->descripcio,
+							'poble' => $results->poble];
 			return $camp;
+		}
+	}
+
+	static public function getNom($id){
+		$result = Camp::select('nom')->where('id', '=', $id)->get();
+		if(!is_null($result)){
+			return $result->toArray()[0]['nom'];
 		}
 	}
 
@@ -73,7 +86,9 @@ class Camp extends Model {
 		$results = Camp::select(DB::raw('AsText(poligon) as ubicacio'), DB::raw('X(centre) as centrex'), DB::raw('Y(centre) as centrey'))->where('id', '=', $id)->first();
 		if(!is_null($results->ubicacio)){
 			$coordenades = GoogleMapsController::linestringToArray($results->ubicacio);
-			$dades = ['ubicacio' => $coordenades, 'centrex' => $results->centrex, 'centrey' => $results->centrey];
+			$dades = ['ubicacio' => $coordenades,
+								'centrex' => $results->centrex,
+								'centrey' => $results->centrey];
 			return $dades;
 		}
 	}
@@ -106,5 +121,37 @@ class Camp extends Model {
 			return $dades;
 		}
 	}
+
+	static private function getVisibilitat($id){
+		$result = Camp::select('visibilitat_id')->where('id', '=', $id)->get();
+		if(!is_null($result)){
+			return $result->toArray()[0]['visibilitat_id'];
+		}
+	}
+
+	static public function esVisible($id, $profileIdVisualitzador){
+		if(Camp::perfilId($id)==$profileIdVisualitzador){
+			return true;
+		}
+		else{
+			switch (Camp::getVisibilitat($id)) {
+				case 1://Tots
+					return true;
+					break;
+				case 2://Ningú
+					return false;
+					break;
+				case 3://Amics
+					dd('no definit');
+					break;
+				default:
+					return false;
+					break;
+			}
+		}
+
+
+	}
+
 
 }

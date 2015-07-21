@@ -19,13 +19,13 @@
   #esquerra{
     float: left;
     width: 50%;
-    height: 37%;
+    height: 35%;
     overflow-y: auto
   }
   #dreta{
     float: right;
     width: 50%;
-    height: 37%;
+    height: 35%;
     overflow-y: scroll
   }
   #nfocamp table{

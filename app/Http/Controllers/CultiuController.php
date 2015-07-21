@@ -44,12 +44,8 @@ class CultiuController extends Controller {
 	 */
 	public function store(CrearCultiuRequest $request)
 	{
-	//	dd($request->all());
-/*		if(strlen($request->headline)){
-			if(strlen($request->text)){
-				if(strlen($request->startDate)){*/
+		//dd("Hola");
 					$cultiu = new Cultiu($request->all());
-					//$cultiu->planta_id = 1;
 					$cultiu->save();
 					$event = new Event();
 					$event->headline = "Inici";
@@ -60,20 +56,8 @@ class CultiuController extends Controller {
 					$cultiu->save();
 					$event->cultiu_id = $cultiu->id;
 					$event->save();
-					return redirect('home/cultiu/'.$cultiu->id);
-/*					}
-				else{
-					dd("LA data d'inici no pot estar buit");
-				}
-			}
-			else{
-				dd("La descripcio no pot estar buit");
-			}
-		}
-		else{
-			dd("El nom no pot estar buit");
-		}
-*/
+				//	return redirect('home/cultiu/'.$cultiu->id);
+
 	}
 
 	/**

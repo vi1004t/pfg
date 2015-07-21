@@ -37,5 +37,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		return $this->hasOne('App\UserProfile');
 
 	}
+	static public function nickUser($id){
+		$result = User::select('nick')->where('id', '=', $id)->first();
+		return $result->nick;
+	}
 
 }

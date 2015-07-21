@@ -17,6 +17,7 @@ class CampController extends Controller {
 		$this->middleware('auth');
 		$this->middleware('is_camp', ['only' => ['index', 'edit', 'show']]);
 	}
+
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -51,7 +52,7 @@ class CampController extends Controller {
 
 		$camp = new Camp($request->all());
 		if(!($request->punts == "")){
-			dd($request->poligon);
+			//dd($request->poligon);
 			$centre = GoogleMapsController::calcularCentrePoligon($request->punts);
 			$arraycoords = GoogleMapsController::stringToArray($request->punts);
 			//es forma el string per a insertar en mysql el linestring. Entre punt i
@@ -92,26 +93,18 @@ class CampController extends Controller {
 		$info = Camp::infoCamp($camp);
 		$ubicacio = Camp::coordenades($camp);
 		if(!is_null($ubicacio['ubicacio'])){
-			$coordenades[] = ['punts' => GoogleMapsController::formarPoligon($ubicacio['ubicacio']), 'color' => '#FF0000', 'info' => '<b>Hola</b><br><a href="http://www.google.es">link</a>'];
+			$coordenades[] =
+				['punts' => GoogleMapsController::formarPoligon($ubicacio['ubicacio']),
+				'color' => '#FF0000',
+				'info' => GoogleMapsController::crearInfowindow($camp, UserProfile::perfilId(Auth::user()->id))];
 			$veins = Camp::campsVeins($camp);
 			foreach ($veins as $vei) {
 				$temp = Camp::coordenades($vei->id);
-				$coordenades[] = ['punts' => GoogleMapsController::formarPoligon($temp['ubicacio']), 'color' => '#000000', 'info' => 'no_valor'];
+				$coordenades[] =
+					['punts' => GoogleMapsController::formarPoligon($temp['ubicacio']),
+					'color' =>  GoogleMapsController::getColor($vei->id, UserProfile::perfilId(Auth::user()->id)),
+					'info' => GoogleMapsController::crearInfowindow($vei->id, UserProfile::perfilId(Auth::user()->id))];
 			}
-			//dd($coordenades);
-			//$coordenades[] = GoogleMapsController::formarPoligon($ubicacio['ubicacio']);
-
-			//dd($coordenades);
-			/*$coordenades = GoogleMapsController::dibuixarCamp([$ubicacio['ubicacio']]);
-
-			$coordenades = $coordenades . GoogleMapsController::eventOnClick("http://pfg.org/home/camp/17", "camp0");
-			$veins = Camp::campsVeins($camp);
-			foreach ($veins as $vei) {
-				$temp = Camp::coordenades($vei->id);
-				$poligon[] = $temp['ubicacio'];
-			}
-			$coordenades = $coordenades . GoogleMapsController::dibuixarCamp($poligon, '#000000');
-			*/
 			$ubicacio_centre['y'] = $ubicacio['centrey'];
 			$ubicacio_centre['x'] = $ubicacio['centrex'];
 		}
@@ -123,9 +116,14 @@ class CampController extends Controller {
 		$cultius = Cultiu::cultiusCamp($camp);
 		if(!is_null($cultius)){
 			$llistat = CampController::llistarCultius($cultius);
-//dd($llistat);
+//dd($cultius);
 		}
-		$dades = ['ubicacio' => $info['poble'], 'ubicacio_centre' => $ubicacio_centre, 'info' => $info, 'id' => $camp, 'cultius' => $llistat, 'coordenades' => $coordenades];
+		$dades = ['ubicacio' => $info['poble'],
+		 					'ubicacio_centre' => $ubicacio_centre,
+							'info' => $info,
+							'id' => $camp,
+							'cultius' => $llistat,
+							'coordenades' => $coordenades];
 		return view('privat.camp')->with('dades', $dades);
 	}
 

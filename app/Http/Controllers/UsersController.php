@@ -42,12 +42,6 @@ class UsersController extends Controller {
 	 */
 	public function store(CrearUsuariRequest $request)
 	{
-		//dd($request->all());
-/**		if(strlen($request->nick)){
-			if(strlen($request->email)){
-				if(strlen($request->password)){
-					if(strlen($request->password2)){
-						if($request->password == $request->password2){ */
 							$password = \Hash::make($request->password);
 							$user = new User($request->all());
 							$user->password = $password;
@@ -67,29 +61,7 @@ class UsersController extends Controller {
 							$userprofile->user_id = $user->id;
 							$userprofile->save();
 							return redirect('perfil/'.$userprofile->id);													//usuari normal
-							dd($password);
-/**						}
-						else{
-							dd("El password i la seva confirmació no coincidixen");
-						}
-					}
-					else{
-						dd("La confirmació del password no pot estar buit");
-					}
-
-				}
-				else{
-					dd("El password no pot estar buit");
-				}
-			}
-			else{
-				dd("El correu no pot estar buit");
-			}
-		}
-		else{
-			dd("El nick no pot estar buit");
-		}
-*/
+							//dd($password);
 	}
 
 	/**

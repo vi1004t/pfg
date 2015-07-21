@@ -33,7 +33,7 @@ google.maps.event.addDomListener(window, 'load', dibuixar);
 @stop
 @section('menuglobal')
   <li><a href="../">Casa</a></li>
-  <li>{!! Html::linkAction('CultiuController@create', 'Crear cultiu', array('id' => $dades['id'])) !!}</li>
+  <li>{!! Html::linkAction('CultiuController@create', 'Crear cultiu', array('id' => $dades['id']), array('data-toggle' => 'modal', 'data-target' => '#flotant')) !!}</li>
   <li><a href="/">Editar</a></li>
   @parent
 @stop
@@ -73,5 +73,19 @@ google.maps.event.addDomListener(window, 'load', dibuixar);
         <p>Encara no tens cultius en aquest camp</p>
     @endif
   </div>
+</div>
+
+
+<script>
+window.closeModal = function(){
+    $('#flotant').modal('hide');
+};
+</script>
+
+<div class="modal fade" id="flotant" tabindex="-1" role="dialog" aria-labelledby="flotantfinestra">
+  <div class="modal-dialog">
+      <div class="modal-content">
+      </div> <!-- /.modal-content -->
+  </div> <!-- /.modal-dialog -->
 </div>
 @stop

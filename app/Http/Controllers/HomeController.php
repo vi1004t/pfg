@@ -46,7 +46,9 @@ class HomeController extends Controller {
 
 					$temp = Camp::coordenades($item['id']);
 					if(!is_null($temp['ubicacio'])){
-						$coordenades[] = ['punts' => GoogleMapsController::formarPoligon($temp['ubicacio']), 'color' => '#FF0000'];
+						$coordenades[] = ['punts' => GoogleMapsController::formarPoligon($temp['ubicacio']),
+															'color' => '#FF0000',
+															'info' => GoogleMapsController::crearInfowindow($item['id'], UserProfile::perfilId(Auth::user()->id))];
 						//$arraycoord[] = $temp['ubicacio'];
 					}
 
@@ -70,7 +72,10 @@ class HomeController extends Controller {
 */
 		//dd($coordenades);
 		//dd(UserProfile::poblacio(UserProfile::perfilId(Auth::user()->id)));
-		$dades = ['ubicacio' => $ubicacio, 'camps' => $llistat, 'ubicacio_centre' => $ubicacio_centre, 'coordenades' => $coordenades];
+		$dades = ['ubicacio' => $ubicacio,
+							'camps' => $llistat,
+							'ubicacio_centre' => $ubicacio_centre,
+							'coordenades' => $coordenades];
 		//dd($poblacio->toArray()[0]['poblacio']);
 		return view('home', ['dades' => $dades]);
 		}

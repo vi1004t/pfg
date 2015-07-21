@@ -2,7 +2,10 @@
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
+use App\Camp;
+use App\Cultiu;
+use App\UserProfile;
+use App\User;
 use Illuminate\Http\Request;
 
 class GoogleMapsController extends Controller {
@@ -50,6 +53,17 @@ class GoogleMapsController extends Controller {
 		//dd($coordenades);
 		return $coordenades;
 	}
+
+	static public function eventOnClick($url, $idPoligon){
+		$string = "<script>function eventOnClick".$idPoligon."(){
+							google.maps.event.addListener(" . $idPoligon . ", 'click', function (event) {
+							window.location.href = 'http://pfg.org/home/camp/17';
+							});
+							}
+							google.maps.event.addDomListener(window, 'load', eventOnClick".$idPoligon.");
+							</script>	";
+		return $string;
+	}
 	*/
 
 	/*
@@ -63,17 +77,6 @@ class GoogleMapsController extends Controller {
 			$coordenades = $coordenades.'new google.maps.LatLng('. $punt['y'] . ',' . $punt['x'] . '),';
 		}
 		return $coordenades;
-	}
-
-	static public function eventOnClick($url, $idPoligon){
-		$string = "<script>function eventOnClick".$idPoligon."(){
-							google.maps.event.addListener(" . $idPoligon . ", 'click', function (event) {
-							window.location.href = 'http://pfg.org/home/camp/17';
-							});
-							}
-							google.maps.event.addDomListener(window, 'load', eventOnClick".$idPoligon.");
-							</script>	";
-		return $string;
 	}
 
 	/*
@@ -205,4 +208,43 @@ class GoogleMapsController extends Controller {
 		}
 		return $objective;
 	}
+
+	static function crearInfowindow($id, $profileIdVisualitzador){
+			if (Camp::esVisible($id, $profileIdVisualitzador)) {
+				$nom = Camp::getNom($id);
+				$cultius = Cultiu::cultiusCamp($id);
+				$nick = User::nickUser(UserProfile::userId(Camp::perfilId($id)));
+				//si el camp correspon a l'usuari s'habilita el link, sino es deshabilita
+				if(Camp::perfilId($id)==$profileIdVisualitzador){
+					$string = '<b><h3><a href="/home/camp/'.$id.'">'.$nom.'</a></h3></b><h6>'.$nick.'</h6>';
+				}
+				else{
+					$string = '<b><h3>'.$nom.'</h3></b><h6>'.$nick.'</h6>';
+				}
+				//
+				if(count($cultius)>0){
+					//dd($cultius);
+					foreach ($cultius as $cultiu) {
+						if (Cultiu::esVisible($cultiu['id'], $profileIdVisualitzador)) {
+							$string = $string . $cultiu['nom'] .'<br>';
+						}
+					}
+				}
+			}
+			else{
+				$string = "Información no disponible";
+			}
+			return $string;
+	}
+
+	static function getColor($id, $profileIdVisualitzador){
+			if (Camp::esVisible($id, $profileIdVisualitzador)) {
+				$color = '#00FF00';
+			}
+			else{
+				$color = '#000000';
+			}
+			return $color;
+	}
+
 }
