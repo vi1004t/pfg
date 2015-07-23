@@ -7,6 +7,7 @@
 	<title>Comunitat Agrícola AGRECO</title>
 	{!! Html::Style('/css/app.css') !!}
 	{!! Html::Style('/css/aplicacio.css') !!}
+	<link rel="stylesheet" type="text/css" media="screen" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
 
 	<!-- <link href="/css/app.css" rel="stylesheet"> -->
 
@@ -81,7 +82,26 @@
 	    <marquee scrollamount="1">Default marquee text scrolls from right to left</marquee>
 	  </div>
 	</div>
-		@yield('mapa')
+		@section('mapa')
+		<div id="map-canvas"></div>
+		@show
 		@yield('content')
+
+
+		<script>
+		window.closeModal = function(){
+		    $('#flotant').modal('hide');
+		};
+		window.reloadMapa = function(){
+		  redibuixa();
+		}
+		</script>
+
+		<div class="modal fade" id="flotant" tabindex="-1" role="dialog" aria-labelledby="flotantfinestra">
+		  <div class="modal-dialog">
+		      <div class="modal-content">
+		      </div> <!-- /.modal-content -->
+		  </div> <!-- /.modal-dialog -->
+		</div>
 </body>
 </html>

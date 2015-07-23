@@ -28,23 +28,11 @@ class EventController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function create($array)
+	public function create()
 	{
-		//$array = ['user' => $user, 'camp' => $camp, 'cultiu' => $cultiu ];
-		return view('crear.event')->with('array', $array);
+		return view('crear.event');
 	}
-	public function crear(Request $request)
-	{
-		dd("hola");
-		return view('crear.event')->with('array', $request);
-	}
-	public function postcrear(Request $request)
-	{
-		//dd("hola");
-		$array = $request->only('user', 'camp', 'cultiu', 'tevent');
-		//dd('perfil/'.$array['user'].'/camp/'.$array['camp'].'/cultiu/'.$array['cultiu'].'/event/crear');
-		return redirect('perfil/'.$array['user'].'/camp/'.$array['camp'].'/cultiu/'.$array['cultiu'].'/event/crear');
-	}
+
 
 	/**
 	 * Store a newly created resource in storage.
@@ -53,9 +41,11 @@ class EventController extends Controller {
 	 */
 	public function store(CrearEventRequest $request)
 	{
+		//dd('hola')
+		//echo json_encode($request);
 		$event = new Event($request->all());
 		$event->save();
-		return redirect('perfil/'.$request->user_id.'/camp/'.$request->camp_id.'/cultiu/'.$event->cultiu_id);
+		//return redirect('perfil/'.$request->user_id.'/camp/'.$request->camp_id.'/cultiu/'.$event->cultiu_id);
 	}
 
 	/**
@@ -77,7 +67,8 @@ class EventController extends Controller {
 	 */
 	public function edit($id)
 	{
-		//
+		$event = Event::findOrFail($id);
+		return view(admin.users.edit, compact('event'));
 	}
 
 	/**
@@ -102,7 +93,26 @@ class EventController extends Controller {
 		//
 	}
 
+	static public function llistarEvents($id){
+		$llistat = "";
+		$events = Event::eventsCultiu($id);
+		if(!is_null($cultius)){
+			foreach ($cultius as $item) {
+				//$llistat[] = '<tr><td><a href="/home/cultiu/'.$item['id'].'">'.$item['nom'].'</a></td><td>'.$item['descripcio'].'</td></tr>';
+				$llistat[] = '
+				<div class="row">
+					<div class="col-sm-4 col-md-4"><a href="/home/cultiu/'.$item['id'].'">'.$item['nom'].'</a></div>
+					<div class="col-sm-8 col-md-8">'.$item['descripcio'].'</div>
+				</div>';
+			}
+		}
+		return $llistat;
+	}
 
+	public function actualitzarLlistat($camp){
+		$llistat = CampController::llistarCultius($camp);
+		return view('privat.campllistat')->with('dades', $llistat);
+	}
 
 
 }

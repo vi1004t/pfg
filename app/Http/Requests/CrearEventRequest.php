@@ -25,7 +25,7 @@ class CrearEventRequest extends Request {
 			'headline' => 'required|max:255',
 			'text' => 'required|max:255',
 			'startDate' => 'required|date',
-			'endDate' => 'required|date',
+			'endDate' => 'required|date|after:'. \Carbon\Carbon::parse($this->startDate)->subDay()->toDateString(),
 			'assetmedia' => 'string|max:255',
 			'assetcredit' => 'string|max:255',
 			'assetcaption' => 'string|max:255',

@@ -15,7 +15,7 @@ class CampController extends Controller {
 	public function __construct()
 	{
 		$this->middleware('auth');
-		$this->middleware('is_camp', ['only' => ['index', 'edit', 'show']]);
+		$this->middleware('is_camp', ['only' => ['index', 'edit', 'show', 'actualitzarLlistat']]);
 	}
 
 	/**
@@ -91,39 +91,8 @@ class CampController extends Controller {
 		$llistat = "";
 		$centre = "";
 		$info = Camp::infoCamp($camp);
-		$ubicacio = Camp::coordenades($camp);
-		if(!is_null($ubicacio['ubicacio'])){
-			$coordenades[] =
-				['punts' => GoogleMapsController::formarPoligon($ubicacio['ubicacio']),
-				'color' => '#FF0000',
-				'info' => GoogleMapsController::crearInfowindow($camp, UserProfile::perfilId(Auth::user()->id))];
-			$veins = Camp::campsVeins($camp);
-			foreach ($veins as $vei) {
-				$temp = Camp::coordenades($vei->id);
-				$coordenades[] =
-					['punts' => GoogleMapsController::formarPoligon($temp['ubicacio']),
-					'color' =>  GoogleMapsController::getColor($vei->id, UserProfile::perfilId(Auth::user()->id)),
-					'info' => GoogleMapsController::crearInfowindow($vei->id, UserProfile::perfilId(Auth::user()->id))];
-			}
-			$ubicacio_centre['y'] = $ubicacio['centrey'];
-			$ubicacio_centre['x'] = $ubicacio['centrex'];
-		}
-		else{
-			$coordenades = null;
-			$ubicacio_centre = 'no_valor';
-		}
-
-		$cultius = Cultiu::cultiusCamp($camp);
-		if(!is_null($cultius)){
-			$llistat = CampController::llistarCultius($cultius);
-//dd($cultius);
-		}
-		$dades = ['ubicacio' => $info['poble'],
-		 					'ubicacio_centre' => $ubicacio_centre,
-							'info' => $info,
-							'id' => $camp,
-							'cultius' => $llistat,
-							'coordenades' => $coordenades];
+		$dades = ['info' => $info,
+							'id' => $camp];
 		return view('privat.camp')->with('dades', $dades);
 	}
 
@@ -135,7 +104,9 @@ class CampController extends Controller {
 	 */
 	public function edit($id)
 	{
-		//
+		$camp = Camp::findOrFail($id);
+
+		return view('editar.camp', compact('camp'));
 	}
 
 	/**
@@ -144,9 +115,12 @@ class CampController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update($id, CrearCampRequest $request )
 	{
-		//
+		//dd($id);
+		$camp = Camp::findOrFail($id);
+		$camp->fill($request->all());
+		$camp->save();
 	}
 
 	/**
@@ -160,18 +134,29 @@ class CampController extends Controller {
 		//
 	}
 
-	private function llistarCultius($dades){
-		foreach ($dades as $item) {
-			//$llistat[] = '<tr><td><a href="/home/cultiu/'.$item['id'].'">'.$item['nom'].'</a></td><td>'.$item['descripcio'].'</td></tr>';
-			$llistat[] = '
-			<div class="row">
-				<div class="col-sm-4 col-md-4"><a href="/home/cultiu/'.$item['id'].'">'.$item['nom'].'</a></div>
-				<div class="col-sm-8 col-md-8">'.$item['descripcio'].'</div>
-			</div>';
+	static public function llistarCultius($id){
+		$llistat = "";
+		$cultius = Cultiu::cultiusCamp($id);
+		if(!is_null($cultius)){
+			foreach ($cultius as $item) {
+				//$llistat[] = '<tr><td><a href="/home/cultiu/'.$item['id'].'">'.$item['nom'].'</a></td><td>'.$item['descripcio'].'</td></tr>';
+				$llistat[] = '
+				<div class="row">
+					<div class="col-sm-4 col-md-4"><a href="/home/cultiu/'.$item['id'].'">'.$item['nom'].'</a></div>
+					<div class="col-sm-8 col-md-8">'.$item['descripcio'].'</div>
+				</div>';
+			}
 		}
 		return $llistat;
 	}
 
+	public function actualitzarLlistat($camp){
+		$llistat = CampController::llistarCultius($camp);
+		return view('privat.campllistat')->with('dades', $llistat);
+	}
 
+	static function dibuixarMapa($camp){
+		return view('mapa')->with('mapa', GoogleMapsController::dibuixarMapa($camp, 1));
+	}
 
 }

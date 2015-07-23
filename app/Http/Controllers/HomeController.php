@@ -33,50 +33,34 @@ class HomeController extends Controller {
 		*/
 		public function index()
 		{
-			//return view('home');
+		return view('home');
+		}
+
+		static public function llistarCamps($id){
 			$llistat = "";
-			$arraycoord = null;
-			$ubicacio_centre = "no_valor";
-			$ubicacio = UserProfile::poblacio(UserProfile::perfilId(Auth::user()->id));
-			$camps = Camp::campsUsuari(UserProfile::perfilId(Auth::user()->id));
-			//dd($camps);
+				$camps = Camp::campsUsuari($id);
 			if(!is_null($camps)){
 				foreach ($camps as $item) {
-
-
-					$temp = Camp::coordenades($item['id']);
-					if(!is_null($temp['ubicacio'])){
-						$coordenades[] = ['punts' => GoogleMapsController::formarPoligon($temp['ubicacio']),
-															'color' => '#FF0000',
-															'info' => GoogleMapsController::crearInfowindow($item['id'], UserProfile::perfilId(Auth::user()->id))];
-						//$arraycoord[] = $temp['ubicacio'];
-					}
-
-
-					//$llistat[] = '<tr><td><a href="/home/camp/'.$item['id'].'">'.$item['nom'].'</a></td><td>'.$item['descripcio'].'</td><td>'.$item['poble'].'</td></tr>';
+					//$llistat[] = '<tr><td><a href="/home/cultiu/'.$item['id'].'">'.$item['nom'].'</a></td><td>'.$item['descripcio'].'</td></tr>';
 					$llistat[] = '
 					<div class="row">
-					<div class="col-sm-4 col-md-4"><a href="/home/camp/'.$item['id'].'">'.$item['nom'].'</a></div>
-					<div class="col-sm-5 col-md-5">'.$item['descripcio'].'</div>
-					<div class="col-sm-3 col-md-3">'.$item['poble'].'</div>
+						<div class="col-sm-4 col-md-4"><a href="/home/camp/'.$item['id'].'">'.$item['nom'].'</a></div>
+						<div class="col-sm-5 col-md-5">'.$item['descripcio'].'</div>
+						<div class="col-sm-3 col-md-3">'.$item['poble'].'</div>
 					</div>';
 				}
 			}
-			/*
-			if(!is_null($arraycoord)){
-				$coordenades = GoogleMapsController::dibuixarCamp($arraycoord);
-			}
-			else{
-				$coordenades = '';
-			}
-*/
-		//dd($coordenades);
-		//dd(UserProfile::poblacio(UserProfile::perfilId(Auth::user()->id)));
-		$dades = ['ubicacio' => $ubicacio,
-							'camps' => $llistat,
-							'ubicacio_centre' => $ubicacio_centre,
-							'coordenades' => $coordenades];
-		//dd($poblacio->toArray()[0]['poblacio']);
-		return view('home', ['dades' => $dades]);
+			return $llistat;
+		}
+
+		public function actualitzarLlistat(){
+			$llistat = HomeController::llistarCamps(UserProfile::perfilId(Auth::user()->id));
+			//dd($llistat);
+			return view('homellistat')->with('dades', $llistat);
+		}
+
+
+		static function dibuixarMapa(){
+			return view('mapa')->with('mapa', GoogleMapsController::dibuixarMapa(UserProfile::perfilId(Auth::user()->id), 0));
 		}
 }

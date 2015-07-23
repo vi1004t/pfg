@@ -24,9 +24,9 @@ class UserProfile extends Model {
 			}
 		}
 		static public function perfilId($id){
-			$result = UserProfile::select('id')->where('user_id', '=', $id)->get();
+			$result = UserProfile::select('id')->where('user_id', '=', $id)->first();
 			if(!is_null($result)){
-				return $result->toArray()[0]['id'];
+				return $result->id;
 			}
 		}
 

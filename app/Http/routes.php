@@ -19,32 +19,23 @@ Route::resource('enfermetats', 'EnfermetatController');
 
 //Route::match(['get', 'post'], 'home/camp/{camp}', 'CampController@show');
 
+Route::get('home/camp/{camp}/llista', 'CampController@actualitzarLlistat');
+
+Route::get('home/camp/{camp}/mapa', 'CampController@dibuixarMapa');
+
 Route::resource('home/camp', 'CampController');
+
+Route::resource('home/event', 'EventController');
+
+Route::get('home/cultiu/{cultiu}/reload', 'CultiuController@refrescarTimeline');
 
 Route::get('home/cultiu/{cultiu}/timeline', 'CultiuController@timeline');
 
 Route::resource('home/cultiu', 'CultiuController');
 
-//a partir d'ací encara no està OK
+Route::get('home/llista', 'HomeController@actualitzarLlistat');
 
-//Route::resource('perfil', 'UserProfileController');
-
-Route::post('perfil/{user}/camp/{camp}/cultiu/{cultiu}/event/postcrear', 'EventController@postcrear');
-
-Route::post('perfil/{user}/camp/{camp}/cultiu/{cultiu}/event/crear', 'EventController@crear');
-
-Route::resource('perfil/{user}/camp/{camp}/cultiu/{cultiu}/event', 'EventController');
-
-//Route::resource('usuari', 'UsersController');
-
-
-
-
-Route::get('galeria', function(){
-
-	//return view('proves.prova1');
-		return App\Camp::campsUsuari(1);
-});
+Route::get('home/mapa', 'HomeController@dibuixarMapa');
 
 Route::get('home', 'HomeController@index');
 

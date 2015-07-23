@@ -25,10 +25,11 @@ class Cultiu extends Model {
 	}
 
 	static public function perfilId($id){
-		//dd($id);
-		$result = Cultiu::select('user_profile_id')->where('id', '=', $id)->get();
+
+		$result = Cultiu::select('user_profile_id')->where('id', '=', $id)->first();
 		if(!is_null($result)){
-			return $result->toArray()[0]['user_profile_id'];
+			//dd($result->toArray());
+			return $result->user_profile_id;
 		}
 	}
 
@@ -54,11 +55,12 @@ class Cultiu extends Model {
 	}
 	static public function infoCultiu($id)
 	{
-		$results = Cultiu::select('id', 'headline', 'text', 'camp_id')->where('id', '=', $id)->first();
+		$results = Cultiu::select('id', 'headline', 'text', 'camp_id', 'startDate')->where('id', '=', $id)->first();
 		if(!is_null($results)){
 			$cultiu = ['id' => $results->id,
 								'nom' => $results->headline,
 								'descripcio' => $results->text,
+								'startDate' => $results->startDate,
 								'camp_id' => $results->camp_id];
 			return $cultiu;
 		}

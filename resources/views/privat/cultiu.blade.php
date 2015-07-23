@@ -5,15 +5,19 @@ body{
   overflow:hidden;
 }
 </style>
+<script>
+$(function(){
+  $(form).submit($('#flotant').modal('show');)
+});
+</script>
 @stop
 @section('menuglobal')
   <li>{!! Html::linkAction('CampController@show', 'Al camp', array('id' => $dades['info']['camp_id'])) !!}</li>
-  <li><a href="{{ $dades['info']['id'] }}/event/create">Crear event</a></li>
   <li><a href="/">Editar</a></li>
   @parent
 @stop
 @section('mapa')
-
+<span id="reload">
       <!-- BEGIN Timeline Embed -->
       <div id="timeline-embed"></div>
       <script type="text/javascript">
@@ -22,13 +26,14 @@ body{
          height: "50%",
          start_at_end:       true,
          lang:               'ca',
-         start_zoom_adjust:  '4',
+         start_zoom_adjust:  '-2',
          source: "{{ $dades['json'] }}"
          //source: "example_json.json"
         }
       </script>
       <script type="text/javascript" src="/js/storyjs-embed.js"></script>
       <!-- END Timeline Embed-->
+</span>
 
 @stop
 
@@ -60,12 +65,9 @@ body{
   </div>
 </div>
 <div id="dreta">
-{!! Form::open(['action' => 'EventController@postcrear']) !!}
-
-    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-    <input type="hidden" name="cultiu" value="{!! $dades['info']['id'] !!}">
-    {!! Form::select('tevent', App\Tevent::listar(), '') !!}
-    {!! Form::submit('Crea'); !!}
-{!! Form::close() !!}
+    <input type="hidden" id="cultiu" value="{!! $dades['info']['id'] !!}">
+    <input type="hidden" id="dataCreacio" value="{!! $dades['info']['startDate'] !!}">
+    {!! Form::select('tevent', App\Tevent::listar(), '', ['id' => 'tevent']) !!}
+    {!! Html::linkAction('EventController@create', 'Crear', '' ,  array('class' => 'btn btn-success', 'data-toggle' => 'modal', 'data-target' => '#flotant')) !!}
 <div>
 @stop

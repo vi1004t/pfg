@@ -48,7 +48,7 @@ class Camp extends Model {
 											'descripcio' => $item->descripcio,
 											'poble' => $item->poble];
 			}
-				return $llistat;
+				return $results;
 			}
 	}
 

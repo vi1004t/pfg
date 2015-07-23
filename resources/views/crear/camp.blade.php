@@ -1,4 +1,4 @@
-@extends('privat.mapa')
+@extends('app')
 
 @section('head')
 @parent
@@ -7,6 +7,26 @@ body{
   overflow:scroll;
 }
 </style>
+<script type="text/javascript"
+   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAr79Hev0xfyNdjMx8fmCZqzARoZ3MnCjs">
+   </script>
+<!--   <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script> -->
+   <script>
+   var geocoder;
+   var map;
+   function initialize() {
+     var latlng = new google.maps.LatLng(-34.397, 150.644);
+     var mapOptions = {
+       center: latlng,
+       zoom: 14,
+       streetViewControl: false,
+       mapTypeId: google.maps.MapTypeId.SATELLITE
+     }
+     map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+   }
+
+   google.maps.event.addDomListener(window, 'load', initialize);
+   </script>
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=drawing"></script>
 
 <script type="text/javascript">
@@ -105,7 +125,47 @@ drawingManager.setMap(map);
 }
 google.maps.event.addDomListener(window, 'load', xxx);
 </script>
+@if($dades['ubicacio_centre'] == 'no_valor')
+  <script>
+  function ubica(){
+    geocoder = new google.maps.Geocoder();
+    if (typeof("{{ $dades['ubicacio'] }}") != '[object Array]'){
+      geocoder.geocode( { 'address': "{{ $dades['ubicacio'] }}" }, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        map.setCenter(results[0].geometry.location);
+        var marker = new google.maps.Marker({
+            map: map,
+            position: results[0].geometry.location
+        });
+      } else {
+        alert('Configura correctament el nom de la teva població: ' + status);
+      }
+      });
+    }
 
+  }
+  google.maps.event.addDomListener(window, 'load', ubica);
+  </script>
+@else
+  <script>
+  function ubica(){
+    var latlng = new google.maps.LatLng({{ $dades['ubicacio_centre']['y'] }}, {{ $dades['ubicacio_centre']['x'] }});
+    map.setCenter(latlng);
+    map.setZoom(18);
+    var marker = new google.maps.Marker({
+        map: map,
+        position: latlng
+    });
+
+  }
+  google.maps.event.addDomListener(window, 'load', ubica);
+  </script>
+@endif
+
+@stop
+@section('menuglobal')
+  <li><a href="../../home">Casa</a></li>
+  @parent
 @stop
 @section('content')
 <div class="container">
@@ -125,35 +185,9 @@ google.maps.event.addDomListener(window, 'load', xxx);
             </div>
           @endif
             {!! Form::open(['action' => 'CampController@store', 'method' => 'POST', 'id' => 'map-form']) !!}
-            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-            {{-- <input type="hidden" name="user_profile_id" value="{!! $user !!}"> --}}
-            <input type="hidden" name="punts" id="map-coords" value=""/>
-
-              <div class="row">
-                <div class="col-sm-6 col-md-6">
-                      <div class="form-group">
-                        {!! Form::label('nom', 'Nom') !!}
-                        {!! Form::text('nom', null, ['class' => 'form-control', 'type'=>'text']) !!}
-                      </div>
-                      <div class="form-group">
-                        {!! Form::label('descripcio', 'Descripció') !!}
-                        {!! Form::text('descripcio', null, ['class' => 'form-control', 'type'=>'email']) !!}
-                      </div>
-                </div>
-                <div class="col-sm-6 col-md-6 ">
-                      <div class="form-group">
-                        {!! Form::label('poble', 'Població') !!}
-                        {!! Form::text('poble', null, ['class' => 'form-control', 'type'=>'email']) !!}
-                      </div>
-                      <div class="form-group">
-                        {!! Form::label('visibilitat_id', 'Tipus de visibilitat') !!}
-                        {!! Form::select('visibilitat_id', App\Visibilitat::listar(), '', ['class' => 'form-control', 'type'=>'email']) !!}
-                      </div>
-                      {!! Form::submit('Registra', array('id' => 'submit_button')) !!}
-                      {!! Form::close() !!}
-
-                </div>
-              </div>
+            @include('parcials.camp')
+            {!! Form::submit('Registra', array('id' => 'submit_button')) !!}
+            {!! Form::close() !!}
             <button id="delete-button">Eliminar dibuix</button>
         </div>
       </div>

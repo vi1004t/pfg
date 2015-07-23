@@ -11,6 +11,9 @@ class Event extends Model {
 	 */
 	protected $table = 'events';
 
+	protected $fillable = ['headline', 'text', 'startDate', 'endDate', 'cultiu_id', 'accio_id', 'tevent_id'];
+
+
 	public function cultius()
   {
 			return $this->belongsTo('App\Cultiu', 'cultiu_id', 'id');

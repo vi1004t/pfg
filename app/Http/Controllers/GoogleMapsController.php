@@ -7,6 +7,7 @@ use App\Cultiu;
 use App\UserProfile;
 use App\User;
 use Illuminate\Http\Request;
+use Auth;
 
 class GoogleMapsController extends Controller {
 
@@ -238,13 +239,70 @@ class GoogleMapsController extends Controller {
 	}
 
 	static function getColor($id, $profileIdVisualitzador){
+		if(Camp::perfilId($id)==$profileIdVisualitzador){
+			return '#FF0000';
+		}
+		else{
 			if (Camp::esVisible($id, $profileIdVisualitzador)) {
 				$color = '#00FF00';
 			}
 			else{
 				$color = '#000000';
 			}
+		}
 			return $color;
+	}
+
+	static function dibuixarMapa($id, $tipus){
+		$llistat = "";
+		$centre = "";
+		$coordenades = null;
+		$items = null;
+		switch ($tipus) {
+			case 0: //usuari
+				$info['poble'] = UserProfile::poblacio($id);
+				$llistat = HomeController::llistarCamps($id);
+				$items = Camp::campsUsuari($id);
+				$ubicacio_centre = 'no_valor';
+				break;
+			case 1: //camp
+				$info = Camp::infoCamp($id);
+				$ubicacio = Camp::coordenades($id);
+				$llistat = CampController::llistarCultius($id);
+				if(!is_null($ubicacio['ubicacio'])){
+					$coordenades[] =
+						['punts' => GoogleMapsController::formarPoligon($ubicacio['ubicacio']),
+						'color' => '#FF0000',
+						'info' => GoogleMapsController::crearInfowindow($id, UserProfile::perfilId(Auth::user()->id))];
+						$ubicacio_centre['y'] = $ubicacio['centrey'];
+						$ubicacio_centre['x'] = $ubicacio['centrex'];
+						$items = Camp::campsVeins($id);
+					}
+					else{
+						$ubicacio_centre = 'no_valor';
+					}
+				break;
+
+			default:
+				return false;
+				break;
+		}
+
+			foreach ($items as $item) {
+				if(!is_null($temp = Camp::coordenades($item->id))){
+					$coordenades[] =
+						['punts' => GoogleMapsController::formarPoligon($temp['ubicacio']),
+						'color' =>  GoogleMapsController::getColor($item->id, UserProfile::perfilId(Auth::user()->id)),
+						'info' => GoogleMapsController::crearInfowindow($item->id, UserProfile::perfilId(Auth::user()->id))];
+				}
+			}
+		$dades = ['ubicacio' => $info['poble'],
+							'ubicacio_centre' => $ubicacio_centre,
+							'info' => $info,
+							'id' => $id,
+							'cultius' => $llistat,
+							'coordenades' => $coordenades];
+		return $dades;
 	}
 
 }

@@ -1,5 +1,6 @@
 @extends('app')
-
+@section('mapa')
+@stop
 @section('content')
 <div class="container-fluid">
 	<div class="row">

@@ -21,7 +21,7 @@ class IsCamp {
 	 */
 	public function handle($request, Closure $next)
 	{
-		if (UserProfile::perfilId($this->auth->user()->id) === Camp::perfilId(app()->router->getCurrentRoute()->getParameter('camp'))){
+		if (UserProfile::perfilId($this->auth->user()->id) == Camp::perfilId(app()->router->getCurrentRoute()->getParameter('camp'))){
 			return $next($request);
 		}
 		else{

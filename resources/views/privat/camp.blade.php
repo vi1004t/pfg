@@ -1,43 +1,37 @@
-@extends('privat.mapa')
+@extends('app')
 
 @section('head')
 @parent
+
+<!--   <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script> -->
+
 <script>
-function dibuixar(){
-  @foreach ($dades["coordenades"] as $item)
-    var coords = [{!!$item["punts"]!!}]
-    var p = new google.maps.Polygon({
-        paths:  coords,
-        strokeWeight: 3,
-        fillColor: '{!!$item["color"]!!}',
-        fillOpacity: 0.35,
-        strokeColor: '{!!$item["color"]!!}',
-        strokeOpacity: 0.8,
+var p =[]; //variable on es guarden els poligons
+$(function(){
+  $('body').on('hidden.bs.modal', '.modal', function () {
+    $(this).removeData('bs.modal');
+});
+  $('#llistat').load(window.location.pathname + '/llista');
+  $('#mapa').load(window.location.pathname + '/mapa',function(){
+    var documentHead = document.head  ||  document.getElementsByTagName('head')[0];
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyAr79Hev0xfyNdjMx8fmCZqzARoZ3MnCjs' +
+        '&signed_in=false&callback=initialize';
+    documentHead.appendChild(script);
+  })
 
-    });
-    p.setMap(map);
-    @if($item['info'] != 'no_valor')
-    google.maps.event.addListener(p, 'click', function(event){
-      infoWindow.setContent('{!!$item["info"]!!}');
-      infoWindow.setPosition(event.latLng);
-      infoWindow.open(map);
-
-    });
-    infoWindow = new google.maps.InfoWindow();
-    @endif
-  @endforeach
-}
-
-google.maps.event.addDomListener(window, 'load', dibuixar);
+});
 </script>
 @stop
 @section('menuglobal')
-  <li><a href="../">Casa</a></li>
+  <li><a href="../../home">Casa</a></li>
   <li>{!! Html::linkAction('CultiuController@create', 'Crear cultiu', array('id' => $dades['id']), array('data-toggle' => 'modal', 'data-target' => '#flotant')) !!}</li>
-  <li><a href="/">Editar</a></li>
+  <li>{!! Html::linkAction('CampController@edit', 'Edita', array('id' => $dades['id']), array('data-toggle' => 'modal', 'data-target' => '#flotant')) !!}</li>
   @parent
 @stop
 @section('content')
+<span id="mapa"></span>
 <div id="esquerra">
   <!-- Informació del camp -->
   <div class="container-fluid">
@@ -60,32 +54,9 @@ google.maps.event.addDomListener(window, 'load', dibuixar);
   </div>
 </div>
 <div id="dreta">
-  <div class="container-fluid">
-    @if ($dades['cultius'] > 0)
-      <div class="row">
-        <div class="col-sm-4 col-md-4">Nom</div>
-        <div class="col-sm-8 col-md-8">Descrpició</div>
-      </div>
-      @foreach ($dades['cultius'] as $item)
-          {!! $item !!}
-      @endforeach
-    @else
-        <p>Encara no tens cultius en aquest camp</p>
-    @endif
+  <div class="container-fluid" id="llistat">
+
   </div>
 </div>
 
-
-<script>
-window.closeModal = function(){
-    $('#flotant').modal('hide');
-};
-</script>
-
-<div class="modal fade" id="flotant" tabindex="-1" role="dialog" aria-labelledby="flotantfinestra">
-  <div class="modal-dialog">
-      <div class="modal-content">
-      </div> <!-- /.modal-content -->
-  </div> <!-- /.modal-dialog -->
-</div>
 @stop
