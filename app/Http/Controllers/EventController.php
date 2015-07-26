@@ -90,7 +90,15 @@ class EventController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		//
+		$event = Event::findOrFail($id);
+		if ($event->headline != 'Inici') {
+			$event->delete();
+			\Session::flash('message', 'Event '. $event->headline .' eliminat');
+		}
+		else{
+			\Session::flash('message', 'Aquest event no es pot eliminar');
+		}
+
 	}
 
 	static public function llistarEvents($id){

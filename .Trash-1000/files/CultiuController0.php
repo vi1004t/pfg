@@ -1,7 +1,6 @@
 <?php namespace App\Http\Controllers;
 use App\Http\Requests;
 use App\Http\Requests\CrearCultiuRequest;
-use App\Http\Requests\FinalitzarCultiuRequest;
 use App\Http\Controllers\Controller;
 use App\Cultiu;
 use App\Event;
@@ -15,7 +14,6 @@ class CultiuController extends Controller {
 		$this->middleware('auth');
 		$this->middleware('is_cultiu', ['only' => ['index', 'edit', 'show', 'finalitzar']]);
 		$this->middleware('is_camp_defined', ['only' => ['create']]);
-		$this->middleware('is_cultiu_editable', ['only' => ['edit', 'update', 'finalitzar', 'posarFi']]);
 	}
 	/**
 	 * Display a listing of the resource.
@@ -71,7 +69,7 @@ class CultiuController extends Controller {
 	public function show($cultiu)
 	{
 		$info = Cultiu::infoCultiu($cultiu);
-		$dades = ['json' => $cultiu.'/timeline', 'info' => $info, 'editable' => Cultiu::esEditable($cultiu)];
+		$dades = ['json' => $cultiu.'/timeline', 'info' => $info];
 		return view('privat.cultiu')->with('dades', $dades);
 	}
 
@@ -100,16 +98,17 @@ class CultiuController extends Controller {
 		$cultiu->text = $request->text;
 		$cultiu->planta_id = $request->planta_id;
 		$cultiu->visibilitat_id = $request->visibilitat_id;
+		dd($cultiu->startDate);
 		$cultiu->save();
 	}
 
 	public function finalitzar($id)
 	{
 		$cultiu = Cultiu::findOrFail($id);
-		return view('editar.cultiufi', compact('cultiu'));
+		return view('editar.cultiufi')->with('id', $id);
 	}
 
-	public function posarFi($id, FinalitzarCultiuRequest $request)
+	public function posarFi($id, CrearCultiuRequest $request)
 	{
 		$cultiu = Cultiu::findOrFail($id);
 		$cultiu->endDate = $request->endDate;
@@ -124,7 +123,7 @@ class CultiuController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		dd($id);
+		//
 	}
 
 	public function timeline($cultiu)
@@ -177,30 +176,6 @@ echo json_encode($c);
 	public function actualitzarInfo($cultiu){
 		$info = Cultiu::infoCultiu($cultiu);
 		return view('privat.cultiuinfo')->with('info', $info);
-	}
-
-	static public function llistarEvents($id){
-		$llistat = "";
-		$cultius = Event::eventsCultiu($id);
-		if(!is_null($cultius)){
-			foreach ($cultius as $item) {
-				$llistat[] = '
-				<div class="row">
-					<div class="col-sm-2 col-md-2">'.$item['nom'].'</div>
-					<div class="col-sm-7 col-md-7">'.$item['descripcio'].'</div>
-					<div class="col-sm-2 col-md-2">'.$item['startDate'].'</div>
-					<div class="col-sm-2 col-md-2">
-					'.$item['startDate'].'</div>
-				</div>';
-			}
-		}
-		return $llistat;
-	}
-
-	public function actualitzarLlistat($cultiu){
-		//$llistat = CultiuController::llistarEvents($cultiu);
-		$cultius = Event::eventsCultiu($cultiu);
-		return view('privat.cultiullistat')->with('dades', $cultius);
 	}
 
 }

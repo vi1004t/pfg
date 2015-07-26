@@ -55,13 +55,15 @@ class Cultiu extends Model {
 	}
 	static public function infoCultiu($id)
 	{
-		$results = Cultiu::select('id', 'headline', 'text', 'camp_id', 'startDate')->where('id', '=', $id)->first();
+		$results = Cultiu::select('id', 'headline', 'text', 'camp_id', 'startDate', 'endDate')->where('id', '=', $id)->first();
 		if(!is_null($results)){
 			$cultiu = ['id' => $results->id,
 								'nom' => $results->headline,
 								'descripcio' => $results->text,
 								'startDate' => $results->startDate,
-								'camp_id' => $results->camp_id];
+								'camp_id' => $results->camp_id,
+								'endDate' => $results->endDate
+								];
 			return $cultiu;
 		}
 	}
@@ -92,6 +94,16 @@ class Cultiu extends Model {
 					return false;
 					break;
 			}
+		}
+	}
+
+	static public function esEditable($id){
+		$result = Cultiu::select('endDate')->where('id', '=', $id)->first();
+		if($result->endDate || is_null($result)){
+			return false;
+		}
+		else{
+			return true;
 		}
 	}
 }

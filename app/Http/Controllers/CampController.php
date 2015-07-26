@@ -9,6 +9,7 @@ use App\UserProfile;
 use Illuminate\Http\Request;
 use Auth;
 use DB;
+use Illuminate\Support\Facades\Redirect;
 
 class CampController extends Controller {
 
@@ -37,9 +38,10 @@ class CampController extends Controller {
 	 */
 	public function create()
 	{
+		$camp = new Camp;
 		$ubicacio = UserProfile::poblacio(UserProfile::perfilId(Auth::user()->id));
 		$dades = ['ubicacio' => $ubicacio, 'ubicacio_centre' => 'no_valor'];
-		return view('crear.camp', ['dades' => $dades]);
+		return view('crear.camp', ['dades' => $dades, 'camp' => $camp]);
 	}
 
 	/**
@@ -131,7 +133,7 @@ class CampController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		//
+		dd('fet!');
 	}
 
 	static public function llistarCultius($id){
@@ -157,6 +159,11 @@ class CampController extends Controller {
 
 	static function dibuixarMapa($camp){
 		return view('mapa')->with('mapa', GoogleMapsController::dibuixarMapa($camp, 1));
+	}
+
+	public function actualitzarInfo($camp){
+		$info = Camp::infoCamp($camp);
+		return view('privat.campinfo')->with('info', $info);
 	}
 
 }

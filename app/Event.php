@@ -19,5 +19,20 @@ class Event extends Model {
 			return $this->belongsTo('App\Cultiu', 'cultiu_id', 'id');
   }
 
+	static public function eventsCultiu($id)
+	{
+		$llistat = null;
+		$results = Event::select('id', 'headline', 'text', 'startDate')->where('cultiu_id', '=', $id)->orderBy('startDate', 'desc')->get();
+		if(!is_null($results)){
+			foreach ($results as $item) {
+				$llistat[] = ['id' => $item->id,
+											'nom' => $item->headline,
+											'descripcio' => $item->text,
+											'startDate' => $item->startDate,
+										];
+			}
+			return $llistat;
+		}
+	}
 
 }

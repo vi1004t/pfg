@@ -46,6 +46,7 @@ $(function(){
         data:$('#creaEvent').serialize(),
         success: function(response) {
           $('#reload').load(window.location.pathname + '/reload');
+          $('#llistat').load(window.location.pathname + '/llista');
           window.parent.closeModal();
           },
         error: function(jqXHR){

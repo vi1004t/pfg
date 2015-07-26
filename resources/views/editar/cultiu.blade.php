@@ -3,29 +3,19 @@
 <head>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <title>Formulari cultiu</title>
-  <script type="text/javascript" src="/js/moment.js"></script>
-  <link rel="stylesheet" href="/css/bootstrap-datetimepicker.min.css" />
-
-
-<script src="/js/bootstrap-datetimepicker.min.js"></script>
 </head>
 <body>
 <script>
 $(function(){
     //per defecte amagar el div dels errors
     $("#errors").hide()
-    $('#startDate').datetimepicker({
-      format: 'YYYY/MM/DD',
-      inline: true
-    });
     $('#Registra').click(function(e){
       e.preventDefault();
       $.ajax({type:'POST',
-        url: '/home/cultiu',
-        data:$('#creaCultiu').serialize(),
+        url: '/home/cultiu/' + {{$cultiu->id}},
+        data:$('#editaCultiu').serialize(),
         success: function(response) {
-          $('#llistat').load(window.location.pathname + '/llista');
-          $('#mapa').load(window.location.pathname + '/mapa', redibuixa);
+          $('#info').load(window.location.pathname + '/info');
           window.parent.closeModal();
           },
         error: function(jqXHR){
@@ -47,7 +37,7 @@ $(function(){
 </script>
   <div class="modal-header">
       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-       <h4 class="modal-title">Crear nou cultiu</h4>
+       <h4 class="modal-title">Modifica dades</h4>
   </div>			<!-- /modal-header -->
   <div class="modal-body">
       <div class="alert alert-danger" id="errors">
@@ -55,17 +45,10 @@ $(function(){
         <ul id="lerrors">
         </ul>
       </div>
-      <form id="creaCultiu" method="post">
-        <input type="hidden" name="camp_id" value="{!! $camp !!}">
-        <input type="hidden" name="user_profile_id" value="{!! $user !!}">
-        <div align="center" class="form-group">
-          {!! Form::label('calendari', 'Tria data d\'inici') !!}
-              <div class='input-group date' id='startDate'>
-                  <input type='hidden' class="form-control" name='startDate'/>
-              </div>
-          </div>
-      @include('parcials.cultiu')
-      <button id="Registra" type="submit" class="btn btn-success">Registra</button>
+      <form id="editaCultiu" method="post">
+        <input type="hidden" name="_method" value="PUT">
+        @include('parcials.cultiu')
+      <button id="Registra" type="submit" class="btn btn-success">Modifica</button>
 
       {!! Form::close() !!}
   </div>			<!-- /modal-footer -->

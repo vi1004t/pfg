@@ -21,6 +21,8 @@ Route::resource('enfermetats', 'EnfermetatController');
 
 Route::get('home/camp/{camp}/llista', 'CampController@actualitzarLlistat');
 
+Route::get('home/camp/{camp}/info', 'CampController@actualitzarInfo');
+
 Route::get('home/camp/{camp}/mapa', 'CampController@dibuixarMapa');
 
 Route::resource('home/camp', 'CampController');
@@ -30,6 +32,14 @@ Route::resource('home/event', 'EventController');
 Route::get('home/cultiu/{cultiu}/reload', 'CultiuController@refrescarTimeline');
 
 Route::get('home/cultiu/{cultiu}/timeline', 'CultiuController@timeline');
+
+Route::get('home/cultiu/{cultiu}/info', 'CultiuController@actualitzarInfo');
+
+Route::get('home/cultiu/{cultiu}/fi', 'CultiuController@finalitzar');
+
+Route::put('home/cultiu/{cultiu}/fi', 'CultiuController@posarFi');
+
+Route::get('home/cultiu/{camp}/llista', 'CultiuController@actualitzarLlistat');
 
 Route::resource('home/cultiu', 'CultiuController');
 

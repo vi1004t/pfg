@@ -7,6 +7,7 @@
 	<title>Comunitat Agrícola AGRECO</title>
 	{!! Html::Style('/css/app.css') !!}
 	{!! Html::Style('/css/aplicacio.css') !!}
+	{!! Html::Style('/css/bootstrap-dialog.min.css') !!}
 	<link rel="stylesheet" type="text/css" media="screen" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
 
 	<!-- <link href="/css/app.css" rel="stylesheet"> -->
@@ -23,6 +24,7 @@
 	<!-- Scripts -->
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
+	<script src="/js/bootstrap-dialog.min.js"></script>
 	@yield('head')
 </head>
 <body>

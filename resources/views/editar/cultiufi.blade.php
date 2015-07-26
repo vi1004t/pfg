@@ -14,18 +14,18 @@
 $(function(){
     //per defecte amagar el div dels errors
     $("#errors").hide()
-    $('#startDate').datetimepicker({
+    $('#endDate').datetimepicker({
       format: 'YYYY/MM/DD',
       inline: true
     });
+    $('#endDate').data("DateTimePicker").minDate('{{$cultiu->startDate}}');
     $('#Registra').click(function(e){
       e.preventDefault();
       $.ajax({type:'POST',
-        url: '/home/cultiu',
-        data:$('#creaCultiu').serialize(),
+        url: '/home/cultiu/' + {{$cultiu->id}} + '/fi',
+        data:$('#formu').serialize(),
         success: function(response) {
-          $('#llistat').load(window.location.pathname + '/llista');
-          $('#mapa').load(window.location.pathname + '/mapa', redibuixa);
+          $('#info').load(window.location.pathname + '/info');
           window.parent.closeModal();
           },
         error: function(jqXHR){
@@ -55,18 +55,18 @@ $(function(){
         <ul id="lerrors">
         </ul>
       </div>
-      <form id="creaCultiu" method="post">
-        <input type="hidden" name="camp_id" value="{!! $camp !!}">
-        <input type="hidden" name="user_profile_id" value="{!! $user !!}">
+      <form id="formu" method="post">
+        <input type="hidden" name="_method" value="PUT">
+        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+        <input type="hidden" name="headline" value="{{$cultiu->headline}}">
+        <input type="hidden" name="text" value="{{$cultiu->text}}">
         <div align="center" class="form-group">
-          {!! Form::label('calendari', 'Tria data d\'inici') !!}
-              <div class='input-group date' id='startDate'>
-                  <input type='hidden' class="form-control" name='startDate'/>
+          {!! Form::label('calendari', 'Tria data de finalització') !!}
+              <div class='input-group date' id='endDate'>
+                  <input type='hidden' class="form-control" name='endDate'/>
               </div>
           </div>
-      @include('parcials.cultiu')
       <button id="Registra" type="submit" class="btn btn-success">Registra</button>
-
       {!! Form::close() !!}
   </div>			<!-- /modal-footer -->
 </body>

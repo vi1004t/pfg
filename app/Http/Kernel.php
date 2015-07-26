@@ -30,6 +30,7 @@ class Kernel extends HttpKernel {
 		'is_user' => 'App\Http\Middleware\IsUser',
 		'is_camp' => 'App\Http\Middleware\IsCamp',
 		'is_cultiu' => 'App\Http\Middleware\IsCultiu',
+		'is_cultiu_editable' => 'App\Http\Middleware\IsCultiuEditable',
 		'is_camp_defined' => 'App\Http\Middleware\IsCampDefined',
 	];
 

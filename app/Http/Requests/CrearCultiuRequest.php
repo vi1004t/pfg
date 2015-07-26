@@ -21,11 +21,21 @@ class CrearCultiuRequest extends Request {
 	 */
 	public function rules()
 	{
-		return [
-			'headline' => 'required|max:255',
-			'text' => 'required|max:255',
-			'startDate' => 'required|date',
-		];
+		if (Request::isMethod('post'))
+		{
+			return [
+				'headline' => 'required|max:255',
+				'text' => 'required|max:255',
+				'startDate' => 'required|date',
+			];
+		}
+		if (Request::isMethod('put'))
+		{
+			return [
+				'headline' => 'required|max:255',
+				'text' => 'required|max:255',
+			];
+		}
 	}
 
 }
