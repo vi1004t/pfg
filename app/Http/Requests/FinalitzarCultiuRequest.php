@@ -22,7 +22,7 @@ class FinalitzarCultiuRequest extends Request {
 	public function rules()
 	{
 		return [
-			'endtDate' => 'required|date',
+			'endDate' => 'required|date',
 		];
 	}
 

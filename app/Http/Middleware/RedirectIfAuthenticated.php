@@ -36,7 +36,8 @@ class RedirectIfAuthenticated {
 	{
 		if ($this->auth->check())
 		{
-			return new RedirectResponse(url('/perfil/'. UserProfile::perfilId($this->auth->user()->id)));
+			return new RedirectResponse(url('/home'));
+			//return new RedirectResponse(url('/perfil/'. UserProfile::perfilId($this->auth->user()->id)));
 		}
 
 		return $next($request);

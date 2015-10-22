@@ -25,7 +25,10 @@ $(function(){
         url: '/home/cultiu/' + {{$cultiu->id}} + '/fi',
         data:$('#formu').serialize(),
         success: function(response) {
+          $("#menuCrearEvents").hide()
           $('#info').load(window.location.pathname + '/info');
+          $('#reload').load(window.location.pathname + '/reload');
+          $('#llistat').load(window.location.pathname + '/llista');
           window.parent.closeModal();
           },
         error: function(jqXHR){
@@ -58,8 +61,6 @@ $(function(){
       <form id="formu" method="post">
         <input type="hidden" name="_method" value="PUT">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-        <input type="hidden" name="headline" value="{{$cultiu->headline}}">
-        <input type="hidden" name="text" value="{{$cultiu->text}}">
         <div align="center" class="form-group">
           {!! Form::label('calendari', 'Tria data de finalització') !!}
               <div class='input-group date' id='endDate'>

@@ -13,6 +13,14 @@ use Carbon\Carbon;
 
 class EventController extends Controller {
 
+	public function __construct()
+	{
+		$this->middleware('auth');
+//		$this->middleware('is_cultiu', ['only' => ['index', 'edit', 'show', 'finalitzar']]);
+//		$this->middleware('is_camp_defined', ['only' => ['create']]);
+//		$this->middleware('is_cultiu_editable', ['only' => ['edit', 'update', 'finalitzar', 'posarFi']]);
+	}
+
 	/**
 	 * Display a listing of the resource.
 	 *

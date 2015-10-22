@@ -111,9 +111,19 @@ class CultiuController extends Controller {
 
 	public function posarFi($id, FinalitzarCultiuRequest $request)
 	{
+
 		$cultiu = Cultiu::findOrFail($id);
 		$cultiu->endDate = $request->endDate;
 		$cultiu->save();
+		$event = new Event();
+		$event->headline = "Fi";
+		$event->text = "Cultiu finalitzat!";
+		$event->tevent_id = 1;
+		$event->startDate = $request->endDate;
+		$event->endDate = $request->endDate;
+		$event->cultiu_id = $id;
+		$event->save();
+
 	}
 
 	/**
