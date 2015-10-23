@@ -35,4 +35,13 @@ class Event extends Model {
 		}
 	}
 
+	static public function cultiuEvent($id)
+	{
+		$llistat = null;
+		$results = Event::select('id','cultiu_id')->where('id', '=', $id)->get();
+		if(!is_null($results)){
+			return $results->toArray()[0]['cultiu_id'];
+		}
+	}
+
 }

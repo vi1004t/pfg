@@ -4,13 +4,9 @@ use Closure;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\RedirectResponse;
 use App\Cultiu;
-class IsCultiuEditable {
+use App\Event;
+class IsEventEditable {
 
-	public function __construct(Guard $auth){
-
-		$this->auth = $auth;
-
-	}
 	/**
 	 * Handle an incoming request.
 	 *
@@ -20,7 +16,9 @@ class IsCultiuEditable {
 	 */
 	public function handle($request, Closure $next)
 	{
-		if (Cultiu::esEditable(app()->router->getCurrentRoute()->getParameter('cultiu'))){
+		//dd($cultiu);
+		dd(Cultiu::esEditable(Event::cultiuEvent(app()->router->getCurrentRoute()->getParameter('event'))));
+		if (Cultiu::esEditable(Event::cultiuEvent(app()->router->getCurrentRoute()->getParameter('event')))){
 			return $next($request);
 		}
 		else{
@@ -30,7 +28,8 @@ class IsCultiuEditable {
 			}
 			else
 			{
-				return new RedirectResponse(url('/home'));
+				//return new RedirectResponse(url('/home'));
+				return redirect()->back();
 			}
 		}
 	}

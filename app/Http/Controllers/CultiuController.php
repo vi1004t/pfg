@@ -189,6 +189,7 @@ echo json_encode($c);
 		return view('privat.cultiuinfo')->with('info', $info);
 	}
 
+//esta funcio s'utilitza???
 	static public function llistarEvents($id){
 		$llistat = "";
 		$cultius = Event::eventsCultiu($id);
@@ -206,11 +207,14 @@ echo json_encode($c);
 		}
 		return $llistat;
 	}
+	//fi
 
 	public function actualitzarLlistat($cultiu){
 		//$llistat = CultiuController::llistarEvents($cultiu);
-		$cultius = Event::eventsCultiu($cultiu);
-		return view('privat.cultiullistat')->with('dades', $cultius);
+		$events = Event::eventsCultiu($cultiu);
+		$dades = ['events' => $events, 'editable' => Cultiu::esEditable($cultiu)];
+
+		return view('privat.cultiullistat')->with('dades', $dades);
 	}
 
 }

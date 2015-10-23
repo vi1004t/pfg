@@ -18,7 +18,8 @@ class EventController extends Controller {
 		$this->middleware('auth');
 //		$this->middleware('is_cultiu', ['only' => ['index', 'edit', 'show', 'finalitzar']]);
 //		$this->middleware('is_camp_defined', ['only' => ['create']]);
-//		$this->middleware('is_cultiu_editable', ['only' => ['edit', 'update', 'finalitzar', 'posarFi']]);
+		$this->middleware('is_event_editable', ['only' => ['destroy']]);
+		//$this->middleware('is_cultiu_editable', ['only' => ['store']]);
 	}
 
 	/**

@@ -25,7 +25,6 @@ $(function(){
         url: '/home/cultiu/' + {{$cultiu->id}} + '/fi',
         data:$('#formu').serialize(),
         success: function(response) {
-          $("#menuCrearEvents").hide()
           $('#info').load(window.location.pathname + '/info');
           $('#reload').load(window.location.pathname + '/reload');
           $('#llistat').load(window.location.pathname + '/llista');

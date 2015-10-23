@@ -48,13 +48,9 @@ $(function(){
   </div>
 </div>
 <div id="dreta">
-  <span id="menuCrearEvents">
-    @if($dades['editable'])
+  <span>
       <input type="hidden" id="cultiu" value="{!! $dades['info']['id'] !!}">
       <input type="hidden" id="dataCreacio" value="{!! $dades['info']['startDate'] !!}">
-      {!! Form::select('tevent', App\Tevent::listar(), '', ['id' => 'tevent']) !!}
-      {!! Html::linkAction('EventController@create', 'Crear', '' ,  array('class' => 'btn btn-success', 'data-toggle' => 'modal', 'data-target' => '#flotant')) !!}
-    @endif
   </span>
   <span id="llistat"></span>
 <div>
