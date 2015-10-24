@@ -47,6 +47,8 @@ Route::get('home/llista', 'HomeController@actualitzarLlistat');
 
 Route::get('home/mapa', 'HomeController@dibuixarMapa');
 
+Route::get('home/events', 'HomeController@actualitzarEvents');
+
 Route::get('home', 'HomeController@index');
 
 Route::controllers([

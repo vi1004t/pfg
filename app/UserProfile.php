@@ -37,4 +37,18 @@ class UserProfile extends Model {
 			}
 		}
 
+		static public function informacioPersonal($id){
+			$result = UserProfile::select('nom', 'cognoms', 'naiximent', 'poblacio')->where('user_id', '=', $id)->first();
+			$nick = User::nickUser($id);
+			if(!is_null($result)){
+				$info = ['nom' => $result->nom,
+									'cognoms' => $result->cognoms,
+									'naiximent' => $result->naiximent,
+									'poblacio' => $result->poblacio,
+									'nick' => $nick
+									];
+				return $info;
+			}
+		}
+
 }

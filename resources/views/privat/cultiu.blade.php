@@ -47,7 +47,7 @@ $(function(){
     @endif
   </div>
 </div>
-<div id="dreta">
+<div class="container-fluid" id="dreta">
   <span>
       <input type="hidden" id="cultiu" value="{!! $dades['info']['id'] !!}">
       <input type="hidden" id="dataCreacio" value="{!! $dades['info']['startDate'] !!}">

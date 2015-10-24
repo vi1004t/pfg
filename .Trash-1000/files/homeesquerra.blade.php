@@ -20,7 +20,6 @@
 var p =[]; //variable on es guarden els poligons
 $(function(){
   $('#llistat').load(window.location.pathname + '/llista');
-  $('#events').load(window.location.pathname + '/events');
   $('#mapa').load(window.location.pathname + '/mapa',function(){
     var documentHead = document.head  ||  document.getElementsByTagName('head')[0];
     var script = document.createElement('script');
@@ -41,10 +40,14 @@ $(function(){
 <span id="mapa"></span>
 
 <div id="esquerra">
+  <div class="btn btn-default" onclick="divLogin('llistat_ocult')">
+    Els meus camps
+  </div>
+  <div id="llistat_ocult" >
     <div class="container-fluid" id="llistat"></div>
+  </div>
 </div>
 <div id="dreta">
-<div class="container-fluid" id="events"></div>
   @for ($i = 0; $i < 20; $i++)
     <li>The current value is {{ $i }}</li>
   @endfor

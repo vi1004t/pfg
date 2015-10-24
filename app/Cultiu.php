@@ -33,14 +33,21 @@ class Cultiu extends Model {
 		}
 	}
 
-	static public function cultiusCamp($id)
+	static public function cultiusCamp($id, $endDate = 0)
 	{
 		$llistat = null;
-		$results = Cultiu::select('id', 'headline', 'text')->where('camp_id', '=', $id)->get();
+		if($endDate){
+			$results = Cultiu::select('id', 'headline', 'text', 'endDate as date')->where('camp_id', '=', $id)->where('endDate', '<>', '')->get();
+		}
+		else{
+			$results = Cultiu::select('id', 'headline', 'text', 'startDate as date')->where('camp_id', '=', $id)->where('endDate', '=', null)->get();
+		}
+
 		if(!is_null($results)){
 			foreach ($results as $item) {
 				$llistat[] = ['id' => $item->id,
 											'nom' => $item->headline,
+											'date' => $item->date,
 											'descripcio' => $item->text];
 			}
 			return $llistat;

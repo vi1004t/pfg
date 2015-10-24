@@ -55,12 +55,22 @@ class HomeController extends Controller {
 
 		public function actualitzarLlistat(){
 			$llistat = HomeController::llistarCamps(UserProfile::perfilId(Auth::user()->id));
-			//dd($llistat);
-			return view('homellistat')->with('dades', $llistat);
+			$info = UserProfile::informacioPersonal(Auth::user()->id);
+			$dades = ['llistat' => $llistat, 'info' => $info];
+			//dd($dades);
+			return view('homellistat')->with('dades', $dades);
 		}
 
 
 		static function dibuixarMapa(){
 			return view('mapa')->with('mapa', GoogleMapsController::dibuixarMapa(UserProfile::perfilId(Auth::user()->id), 0));
+		}
+
+		public function actualitzarEvents(){
+			$llistat = HomeController::llistarCamps(UserProfile::perfilId(Auth::user()->id));
+			$info = UserProfile::informacioPersonal(Auth::user()->id);
+			$dades = ['llistat' => $llistat, 'info' => $info];
+			//dd($dades);
+			return view('homeevents')->with('dades', $dades);
 		}
 }

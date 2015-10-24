@@ -136,16 +136,17 @@ class CampController extends Controller {
 		dd('fet!');
 	}
 
-	static public function llistarCultius($id){
+	static public function llistarCultius($id, $historic = 0){
 		$llistat = "";
-		$cultius = Cultiu::cultiusCamp($id);
+		$cultius = Cultiu::cultiusCamp($id, $historic);
 		if(!is_null($cultius)){
 			foreach ($cultius as $item) {
 				//$llistat[] = '<tr><td><a href="/home/cultiu/'.$item['id'].'">'.$item['nom'].'</a></td><td>'.$item['descripcio'].'</td></tr>';
 				$llistat[] = '
 				<div class="row">
-					<div class="col-sm-4 col-md-4"><a href="/home/cultiu/'.$item['id'].'">'.$item['nom'].'</a></div>
-					<div class="col-sm-8 col-md-8">'.$item['descripcio'].'</div>
+					<div class="col-sm-3 col-md-3"><a href="/home/cultiu/'.$item['id'].'">'.$item['nom'].'</a></div>
+					<div class="col-sm-6 col-md-6">'.$item['descripcio'].'</div>
+					<div class="col-sm-3 col-md-3">'.$item['date'].'</div>
 				</div>';
 			}
 		}
@@ -153,7 +154,9 @@ class CampController extends Controller {
 	}
 
 	public function actualitzarLlistat($camp){
-		$llistat = CampController::llistarCultius($camp);
+		$actius = CampController::llistarCultius($camp);
+		$historic = CampController::llistarCultius($camp, 1);
+		$llistat = ['actius' => $actius, 'historic' => $historic];
 		return view('privat.campllistat')->with('dades', $llistat);
 	}
 
