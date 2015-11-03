@@ -35,22 +35,22 @@ class Cultiu extends Model {
 
 	static public function cultiusCamp($id, $endDate = 0)
 	{
-		$llistat = null;
+		//$llistat = null;
 		if($endDate){
-			$results = Cultiu::select('id', 'headline', 'text', 'endDate as date')->where('camp_id', '=', $id)->where('endDate', '<>', '')->get();
+			$results = Cultiu::select('id', 'headline as nom', 'text as descripcio', 'endDate as date')->where('camp_id', '=', $id)->where('endDate', '<>', '')->get();
 		}
 		else{
-			$results = Cultiu::select('id', 'headline', 'text', 'startDate as date')->where('camp_id', '=', $id)->where('endDate', '=', null)->get();
+			$results = Cultiu::select('id', 'headline as nom', 'text as descripcio', 'startDate as date')->where('camp_id', '=', $id)->where('endDate', '=', null)->get();
 		}
 
 		if(!is_null($results)){
-			foreach ($results as $item) {
+			/*foreach ($results as $item) {
 				$llistat[] = ['id' => $item->id,
 											'nom' => $item->headline,
 											'date' => $item->date,
 											'descripcio' => $item->text];
-			}
-			return $llistat;
+			}*/
+			return $results;
 		}
 	}
 
@@ -62,17 +62,36 @@ class Cultiu extends Model {
 	}
 	static public function infoCultiu($id)
 	{
-		$results = Cultiu::select('id', 'headline', 'text', 'camp_id', 'startDate', 'endDate')->where('id', '=', $id)->first();
+		$results = Cultiu::select('id', 'headline as nom', 'text as descripcio', 'camp_id', 'startDate', 'endDate')->where('id', '=', $id)->first();
 		if(!is_null($results)){
-			$cultiu = ['id' => $results->id,
+			/*$cultiu = ['id' => $results->id,
 								'nom' => $results->headline,
 								'descripcio' => $results->text,
 								'startDate' => $results->startDate,
 								'camp_id' => $results->camp_id,
 								'endDate' => $results->endDate
-								];
+							];*/
 			return $cultiu;
 		}
+	}
+
+	static public function idCultiusCamp($id)
+	{
+
+		$results = Cultiu::select('id')->where('camp_id', '=', $id)->get()->toArray();
+
+		if(!is_null($results)){
+			foreach ($results as $item) {
+				$llistat[] = $item['id'];
+			}
+			//dd($llistat);
+
+			}
+			if(isset($llistat)){
+				if(!is_null($llistat)){
+				return $llistat;
+				}
+			}
 	}
 
 	static private function getVisibilitat($id){

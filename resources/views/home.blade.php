@@ -45,8 +45,5 @@ $(function(){
 </div>
 <div id="dreta">
 <div class="container-fluid" id="events"></div>
-  @for ($i = 0; $i < 20; $i++)
-    <li>The current value is {{ $i }}</li>
-  @endfor
 @stop
 </div>

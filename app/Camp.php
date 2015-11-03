@@ -42,13 +42,26 @@ class Camp extends Model {
 		$results = Camp::select('id', 'nom', 'descripcio', 'poble')->where('user_profile_id', '=', $id)->get();
 		//dd($results->toArray());
 		if(!$results->isEmpty()){
-			foreach ($results as $item) {
+/*			foreach ($results as $item) {
 				$llistat[] = ['id' => $item->id,
 											'nom' => $item->nom,
 											'descripcio' => $item->descripcio,
 											'poble' => $item->poble];
-			}
+			}*/
 				return $results;
+			}
+	}
+
+	static public function idCampsUsuari($id)
+	{
+		$results = Camp::select('id')->where('user_profile_id', '=', $id)->get();
+
+		if(!$results->isEmpty()){
+			foreach ($results as $item) {
+				$llistat[] = $item->id;
+			}
+			//dd($llistat);
+				return $llistat;
 			}
 	}
 
@@ -61,11 +74,11 @@ class Camp extends Model {
 	{
 		$results = Camp::select('id', 'nom', 'descripcio', 'poble')->where('id', '=', $id)->first();
 		if(!is_null($results)){
-			$camp = ['id' => $results->id,
+	/*		$camp = ['id' => $results->id,
 							'nom' => $results->nom,
 							'descripcio' => $results->descripcio,
-							'poble' => $results->poble];
-			return $camp;
+							'poble' => $results->poble];*/
+			return $results;
 		}
 	}
 

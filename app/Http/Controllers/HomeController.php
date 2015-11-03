@@ -3,6 +3,8 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\UserProfile;
 use App\Camp;
+use App\Cultiu;
+use App\Event;
 use Illuminate\Http\Request;
 use Auth;
 class HomeController extends Controller {
@@ -67,10 +69,25 @@ class HomeController extends Controller {
 		}
 
 		public function actualitzarEvents(){
-			$llistat = HomeController::llistarCamps(UserProfile::perfilId(Auth::user()->id));
-			$info = UserProfile::informacioPersonal(Auth::user()->id);
-			$dades = ['llistat' => $llistat, 'info' => $info];
-			//dd($dades);
-			return view('homeevents')->with('dades', $dades);
+			$camps = Camp::idCampsUsuari(UserProfile::perfilId(Auth::user()->id));
+			if(!is_null($camps)){
+				foreach ($camps as $item){
+					$resultatcultius[] = Cultiu::idCultiusCamp($item);
+				}
+				foreach ($resultatcultius as $item){
+					if(isset($item)){
+						if(!is_null($item)){
+							$cultius[] = $item;
+						}
+					}
+				}
+			}
+			dd($resultatcultius);
+				if(!is_null($cultius)){
+					$events[] = Event::eventsUsuari($cultius);
+				}
+
+			dd($events);
+			return view('homeevents')->with('dades', $events);
 		}
 }
