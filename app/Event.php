@@ -48,16 +48,18 @@ class Event extends Model {
 	{
 
 		if(!is_null($cultius)){
-			foreach ($cultius as $cultiu){
-				if(!is_null($cultiu)){
+		//	foreach ($cultius as $cultiu){
+		//		dd($cultiu);
+				if(!is_null($cultius)){
 					$results = Event::select('id', 'headline', 'text', 'startDate','cultiu_id')->where(
-						function ($query) use ($cultiu)
+						function ($query) use ($cultius)
 							{
-								foreach ($cultiu as $key=>$value)
+								foreach ($cultius as $value)
 								{
+//dd($value['id']);
 									if(!is_null($value)){
 										//you can use orWhere the first time, dosn't need to be ->where
-										$query->orWhere('cultiu_id',$value);
+										$query->orWhere('cultiu_id',$value['id']);
 									}
 								}
 							}
@@ -66,9 +68,9 @@ class Event extends Model {
 						$dades[] = $passa;
 						}
 					}
-				}
+				//}
 			}
-			dd($cultius);
+			//dd($dades);
 			if(!is_null($dades)){
 				return $dades;
 		}

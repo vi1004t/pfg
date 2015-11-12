@@ -8,7 +8,7 @@ Events
     <div class="col-sm-2 col-md-2">Data</div>
     <div class="col-sm-1 col-md-1"></div>
   </div>
-  @foreach ($dades[0] as $item)
+  @foreach ($dades as $item)
   <div class="row">
     <div class="col-sm-2 col-md-2">{{$item['cultiu_id']}}</div>
     <div class="col-sm-2 col-md-2">{{$item['headline']}}</div>

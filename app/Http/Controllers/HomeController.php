@@ -74,20 +74,37 @@ class HomeController extends Controller {
 				foreach ($camps as $item){
 					$resultatcultius[] = Cultiu::idCultiusCamp($item);
 				}
-				foreach ($resultatcultius as $item){
-					if(isset($item)){
-						if(!is_null($item)){
-							$cultius[] = $item;
+				foreach ($resultatcultius as $cultiuscamp){
+					if(isset($cultiuscamp)){
+						if(!is_null($cultiuscamp)){
+							foreach ($cultiuscamp as $item){
+								if(isset($item)){
+									if(!is_null($item)){
+										$cultius[] = $item;
+									}
+								}
+							}
 						}
 					}
 				}
 			}
-			dd($resultatcultius);
+			$key = array_search(17, $camps);
+		//	dd($cultius);
 				if(!is_null($cultius)){
-					$events[] = Event::eventsUsuari($cultius);
+					$events = Event::eventsUsuari($cultius);
 				}
-
-			dd($events);
+//dd($cultius);
+				foreach ($events as $event){
+					//dd($event['cultiu_id']);
+					//$event->cultiu_id =
+					$key1 = array_search($event['cultiu_id'], array_column($events, 'cultiu_id')); //array multidimensional
+					$key2 = array_search($event['cultiu_id'], array_column($cultius, 'id')); //array multidimensional
+					$events[$key1]['cultiu_id'] = $cultius[$key2]['nom'];
+					//$key = array_search($event['cultiu_id'], $cultius); //array unidimensional
+					//dd($events[$key1]);
+				}
+				//dd($events);
+			//dd($events);
 			return view('homeevents')->with('dades', $events);
 		}
 }

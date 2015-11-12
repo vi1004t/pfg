@@ -78,7 +78,7 @@ class Cultiu extends Model {
 	static public function idCultiusCamp($id)
 	{
 
-		$results = Cultiu::select('id')->where('camp_id', '=', $id)->get()->toArray();
+		$results = Cultiu::select('id', 'headline as nom')->where('camp_id', '=', $id)->get()->toArray();
 
 		if(!is_null($results)){
 			foreach ($results as $item) {
@@ -87,9 +87,9 @@ class Cultiu extends Model {
 			//dd($llistat);
 
 			}
-			if(isset($llistat)){
-				if(!is_null($llistat)){
-				return $llistat;
+			if(isset($results)){
+				if(!is_null($results)){
+				return $results;
 				}
 			}
 	}
