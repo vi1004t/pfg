@@ -19,7 +19,7 @@ class PlantaController extends Controller {
 	 */
 	public function index()
 	{
-		$result = planta::With('sinonims')
+		$result = planta::With('noms')
 				->orderBy('especie', 'ASC')
 				->get();
 		dd($result->toArray());
@@ -32,7 +32,7 @@ class PlantaController extends Controller {
 	 */
 	public function create()
 	{
-		return view('plantes.crear');
+		return view('crear.plantes');
 	}
 
 	/**
@@ -53,7 +53,7 @@ class PlantaController extends Controller {
 	 */
 	public function show($id)
 	{
-		$result = planta::With('sinonims')
+		$result = planta::With('noms')
 				->where('id', '=', $id)
 				->orderBy('especie', 'ASC')
 				->get();

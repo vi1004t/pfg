@@ -58,6 +58,15 @@ class HomeController extends Controller {
 		public function actualitzarLlistat(){
 			$llistat = HomeController::llistarCamps(UserProfile::perfilId(Auth::user()->id));
 			$info = UserProfile::informacioPersonal(Auth::user()->id);
+			$numCamps = Camp::contaCampsUsuari(UserProfile::perfilId(Auth::user()->id));
+			$camps = Camp::idCampsUsuari(UserProfile::perfilId(Auth::user()->id));
+			foreach ($camps as $item){
+				$resultatcultius[] = Cultiu::idCultiusCamp($item['id']);
+			}
+			$numCultius=(count($resultatcultius, COUNT_RECURSIVE) - count($resultatcultius))/4;
+			//foreach ($resultatcultius as $in_ar) {$res+=getArrCount($in_ar, 1);}
+			$info['numCamps'] = $numCamps;
+			$info['numCultius'] = $numCultius;
 			$dades = ['llistat' => $llistat, 'info' => $info];
 			//dd($dades);
 			return view('homellistat')->with('dades', $dades);
@@ -72,7 +81,7 @@ class HomeController extends Controller {
 			$camps = Camp::idCampsUsuari(UserProfile::perfilId(Auth::user()->id));
 			if(!is_null($camps)){
 				foreach ($camps as $item){
-					$resultatcultius[] = Cultiu::idCultiusCamp($item);
+					$resultatcultius[] = Cultiu::idCultiusCamp($item['id']);
 				}
 				foreach ($resultatcultius as $cultiuscamp){
 					if(isset($cultiuscamp)){
@@ -88,22 +97,30 @@ class HomeController extends Controller {
 					}
 				}
 			}
-			$key = array_search(17, $camps);
-		//	dd($cultius);
+			//dd($cultius);
 				if(!is_null($cultius)){
 					$events = Event::eventsUsuari($cultius);
 				}
-//dd($cultius);
+//dd($events);
 				foreach ($events as $event){
 					//dd($event['cultiu_id']);
 					//$event->cultiu_id =
-					$key1 = array_search($event['cultiu_id'], array_column($events, 'cultiu_id')); //array multidimensional
+					//obtindre el registre del cultiu_id actual
+					$key1 = array_search($event['id'], array_column($events, 'id')); //array multidimensional
+					//obtindre el registre dins de $cultius on està el cultiu_id actual
 					$key2 = array_search($event['cultiu_id'], array_column($cultius, 'id')); //array multidimensional
-					$events[$key1]['cultiu_id'] = $cultius[$key2]['nom'];
+					//obtindre el registre dins de "camps del camp_id actual
+					//$key3 = $cultius[$key2]['camp_id'];
+					//dd($cultius[$key2]['camp_id']);
+					$key3 = array_search($cultius[$key2]['camp_id'], array_column($camps, 'id')); //array multidimensional
+					//dd($key3);
+					//modificar a $events el id del cultiu pel nom del cultiu
+					$events[$key1]['cultiu_nom'] = $cultius[$key2]['nom'];
+					$events[$key1]['bancal_nom'] = $camps[$key3]['nom'];
+					$events[$key1]['bancal_id'] = $camps[$key3]['id'];
 					//$key = array_search($event['cultiu_id'], $cultius); //array unidimensional
 					//dd($events[$key1]);
 				}
-				//dd($events);
 			//dd($events);
 			return view('homeevents')->with('dades', $events);
 		}

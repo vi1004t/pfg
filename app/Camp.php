@@ -51,18 +51,24 @@ class Camp extends Model {
 				return $results;
 			}
 	}
+	static public function contaCampsUsuari($id)
+	{
+		//dd($id);
+		$results = Camp::select('id')->where('user_profile_id', '=', $id)->count();
+		return $results;
+	}
+
 
 	static public function idCampsUsuari($id)
 	{
-		$results = Camp::select('id')->where('user_profile_id', '=', $id)->get();
+		$results = Camp::select('id', 'nom')->where('user_profile_id', '=', $id)->get()->toArray();
 
-		if(!$results->isEmpty()){
-			foreach ($results as $item) {
-				$llistat[] = $item->id;
+		if(isset($results)){
+			if(!is_null($results)){
+			return $results;
 			}
-			//dd($llistat);
-				return $llistat;
-			}
+		}
+
 	}
 
 	/*

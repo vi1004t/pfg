@@ -11,9 +11,9 @@
       <div class="col-sm-4 col-md-4">Població: </div>
       <div class="col-sm-8 col-md-8">{{$dades['info']['poblacio']}}</div>
       <div class="col-sm-4 col-md-4">Terrenys: </div>
-      <div class="col-sm-8 col-md-8">Nick</div>
+      <div class="col-sm-8 col-md-8">{{$dades['info']['numCamps']}}</div>
       <div class="col-sm-4 col-md-4">Cultius: </div>
-      <div class="col-sm-8 col-md-8">Nick</div>
+      <div class="col-sm-8 col-md-8">{{$dades['info']['numCultius']}}</div>
     </div>
   </div>
 

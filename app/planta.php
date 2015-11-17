@@ -17,6 +17,15 @@ class planta extends Model {
 		return $this->hasMany('App\SinonimiesPlanta');
 
 	}
+	
+	public function noms(){
+
+		//return $this->belongsTo('App\SinonimiaPlanta', 'id', 'planta_id');
+		return $this->hasMany('App\PlantesNom');
+
+	}
+
+
 	static public function listar()
 	{
 		$results = planta::select('id', 'especie')->get();

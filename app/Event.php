@@ -56,14 +56,14 @@ class Event extends Model {
 							{
 								foreach ($cultius as $value)
 								{
-//dd($value['id']);
+
 									if(!is_null($value)){
 										//you can use orWhere the first time, dosn't need to be ->where
 										$query->orWhere('cultiu_id',$value['id']);
 									}
 								}
 							}
-					)->orderBy('startDate', 'desc')->get()->toArray();
+					)->orderBy('updated_at', 'desc')->get()->toArray();
 					foreach ($results as $passa){
 						$dades[] = $passa;
 						}

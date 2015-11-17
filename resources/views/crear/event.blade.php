@@ -4,6 +4,7 @@
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <title>Formulari event</title>
   <script type="text/javascript" src="/js/moment.js"></script>
+  <script type="text/javascript" src="/js/moment/locale/ca.js"></script>
   <link rel="stylesheet" href="/css/bootstrap-datetimepicker.min.css" />
 
 
