@@ -54,26 +54,33 @@
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
 			<div class="panel panel-default">
+
 				<div class="panel-heading">Nou cultiu</div>
 				<div class="panel-body">
+					@if (count($errors) > 0)
+						<div class="alert alert-danger">
+							<strong>Whoops!</strong> There were some problems with your input.<br><br>
+							<ul>
+								@foreach ($errors->all() as $error)
+									<li>{{ $error }}</li>
+								@endforeach
+							</ul>
+						</div>
+					@endif
 
-          {!! Form::open(['route' => 'plantes.store', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
+          {!! Form::open(['action' => 'PlantaController@store', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
 
           <div class="form-group">
             {!! Form::label(null, 'Nom popular del cultiu') !!}
-            {!! Form::text('especie', 'Nom del nou cultiu', ['class' => 'form-control']) !!}
+            {!! Form::text('nom_del_cultiu', 'Nom del nou cultiu', ['class' => 'form-control']) !!}
           </div>
           <div class="form-group">
-            {!! Form::label(null, 'Descripció') !!}
-            {!! Form::textarea('	Breu descripció del cultiu', null, ['class' => 'form-control', 'size' => '50x3']) !!}
+            {!! Form::label('descripcio', 'Descripció') !!}
+            {!! Form::textarea('descripcio', 'Breu descripció del cultiu', ['class' => 'form-control', 'size' => '50x3']) !!}
           </div>
           <div class="form-group">
-            {!! Form::label(null, 'Nom científic') !!}
-            {!! Form::text('especie', 'Nom científic del cultiu', ['class' => 'form-control']) !!}
-          </div>
-          <div class="form-group">
-            {!! Form::label(null, 'Espècie') !!}
-            {!! Form::text('especie', 'Nom de la nova espècie', ['class' => 'form-control']) !!}
+            {!! Form::label('cientific', 'Espècie (nom científic)') !!}
+            {!! Form::text('cientific', 'Nom científic del cultiu', ['class' => 'form-control']) !!}
           </div>
 					<div class="form-group">
 						<div class="col-sm-4 col-md-4">
@@ -93,11 +100,11 @@
 	          </div>
 					</div>
           <div class="form-group">
-						{!! Form::checkbox('temporada', 1) !!}
+						{!! Form::checkbox('temporada') !!}
 						És cultiu de temporada
           </div>
 					<div class="form-group">
-						{!! Form::checkbox('ministeri', 1) !!}
+						{!! Form::checkbox('ministeri') !!}
 						Informació extreta del ministèri
 					</div>
 

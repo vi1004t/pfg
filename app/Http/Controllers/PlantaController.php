@@ -1,15 +1,20 @@
 <?php namespace App\Http\Controllers;
 
 use App\Http\Requests;
+use App\Http\Requests\CrearPlantaRequest;
 use App\Http\Controllers\Controller;
 use App\planta;
-use Illuminate\Support\Facades\Request;
+use App\PlantesNom;
+use App\UserProfile;
+use Auth;
+use Illuminate\Http\Request;
+//use Illuminate\Support\Facades\Request;
 
 class PlantaController extends Controller {
 
 	public function __construct()
 	{
-	//	$this->middleware('auth', ['only' => ['create', 'store', 'edit', 'update', 'destroy']]);
+		$this->middleware('auth', ['only' => ['create', 'store', 'edit', 'update', 'destroy']]);
 
 	}
 	/**
@@ -40,9 +45,25 @@ class PlantaController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function store(CrearPlantaRequest $request)
 	{
-		dd(Request::all());
+		$planta = new planta($request->all());
+		$planta->creador_id = UserProfile::perfilId(Auth::user()->id);
+		$nom = new PlantesNom();
+		$nom->nom = $request->nom_del_cultiu;
+		$nom->user_profile_id = UserProfile::perfilId(Auth::user()->id);
+		$nom->contador = 1;
+		$nom->planta_id = $planta->id;
+		//dd($planta);
+
+		$planta->save();
+		$nom->planta_id = $planta->id;
+		$nom->save();
+
+
+
+
+
 	}
 
 	/**
