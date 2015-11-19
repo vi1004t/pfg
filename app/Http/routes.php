@@ -13,6 +13,10 @@
 
 Route::get('/', 'WelcomeController@index');
 
+Route::get('plantes/{plantes}/afegirnom', 'PlantaController@afegirNom');
+
+Route::post('plantes/{plantes}/guardarnom', 'PlantaController@guardarNom');
+
 Route::resource('plantes', 'PlantaController');
 
 Route::resource('enfermetats', 'EnfermetatController');

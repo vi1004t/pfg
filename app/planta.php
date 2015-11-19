@@ -10,7 +10,7 @@ class planta extends Model {
 	 * @var string
 	 */
 	protected $table = 'plantes';
-	protected $fillable = ['descripcio','cientific','sembra_inici','sembra_fi','planta_inici','planta_fi','fruta_inici','fruta_fi','temporada','ministeri'];
+	protected $fillable = ['descripcio','cientific','temporada','ministeri'];
 
 	public function sinonims(){
 

@@ -25,7 +25,7 @@ class PlantaController extends Controller {
 	public function index()
 	{
 		$result = planta::With('noms')
-				->orderBy('especie', 'ASC')
+				//->orderBy('especie', 'ASC')
 				->get();
 		dd($result->toArray());
 	}
@@ -49,13 +49,19 @@ class PlantaController extends Controller {
 	{
 		$planta = new planta($request->all());
 		$planta->creador_id = UserProfile::perfilId(Auth::user()->id);
+		//strtotime passa un string a date, si els valors del string estan separats per - ho agarra com dd-mm-aaaa, si estan
+		//separats per / ho agarra com aaaa/mm/dd. Afegixc al final el any com a valor fixe per a que es puga convertir correctament
+		if($request->sembra_inici != "") $planta->sembra_inici = date('Y-m-d',(strtotime($request->sembra_inici.'-2000')));
+		if($request->sembra_fi != "") $planta->sembra_fi = date('Y-m-d',(strtotime($request->sembra_fi.'-2000')));
+		if($request->planta_inici != "") $planta->planta_inici = date('Y-m-d',(strtotime($request->planta_inici.'-2000')));
+		if($request->planta_fi != "") $planta->planta_fi = date('Y-m-d',(strtotime($request->planta_fi.'-2000')));
+		if($request->fruta_inici != "") $planta->fruta_inici = date('Y-m-d',(strtotime($request->fruta_inici.'-2000')));
+		if($request->fruta_fi != "") $planta->fruta_fi = date('Y-m-d',(strtotime($request->fruta_fi.'-2000')));
 		$nom = new PlantesNom();
 		$nom->nom = $request->nom_del_cultiu;
 		$nom->user_profile_id = UserProfile::perfilId(Auth::user()->id);
 		$nom->contador = 1;
-		$nom->planta_id = $planta->id;
 		//dd($planta);
-
 		$planta->save();
 		$nom->planta_id = $planta->id;
 		$nom->save();
@@ -76,7 +82,7 @@ class PlantaController extends Controller {
 	{
 		$result = planta::With('noms')
 				->where('id', '=', $id)
-				->orderBy('especie', 'ASC')
+		//		->orderBy('especie', 'ASC')
 				->get();
 		dd($result->toArray());
 	}
@@ -114,4 +120,21 @@ class PlantaController extends Controller {
 		//
 	}
 
+		public function afegirNom($planta)
+		{
+			$noms = PlantesNom::llistarNoms($planta);
+			$dades = ['info' => $noms,
+								'id' => $planta];
+			if(!is_null($dades)) return view('crear.nomPlantes')->with('dades', $dades);
+		}
+
+		public function guardarNom($planta, Request $request) //$planta el id de la planta i $request son les dades del formulari enviat
+		{
+			$nom = new PlantesNom();
+			$nom->nom = $request->nom_del_cultiu;
+			$nom->contador = 1;
+			$nom->planta_id = $planta;
+			$nom->user_profile_id = UserProfile::perfilId(Auth::user()->id);
+			$nom->save();
+		}
 }

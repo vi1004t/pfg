@@ -28,10 +28,12 @@ class AddColumnsToPlantes extends Migration {
 	 */
 	public function down()
 	{
-		$table->dropColumn('creador_id');
-		$table->dropColumn('modificador_id');
-		$table->dropColumn('temporal');
-		$table->dropColumn('validat');
+		Schema::table('plantes', function(Blueprint $table) {
+			$table->dropColumn('creador_id');
+			$table->dropColumn('modificador_id');
+			$table->dropColumn('temporal');
+			$table->dropColumn('validat');
+		});
 	}
 
 }

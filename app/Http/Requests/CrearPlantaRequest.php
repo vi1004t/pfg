@@ -23,8 +23,8 @@ class CrearPlantaRequest extends Request {
 	{
 		return [
 			'descripcio' => 'required|max:255',
-			'fruta_inici' => 'required|date_format:d/m',
-			'fruta_fi' => 'required|date_format:d/m',
+			'fruta_inici' => 'required|date_format:d-m',
+			'fruta_fi' => 'required|date_format:d-m',
 			'nom_del_cultiu' => 'string|max:255',
 		];
 	}

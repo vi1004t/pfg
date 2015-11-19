@@ -13,36 +13,36 @@
 <script type="text/javascript">
 		$(function () {
 				$('#iniciSembra').datetimepicker({
-					format: 'DD/MM',
+					format: 'DD-MM',
 					locale: 'ca'
 				});
 				$("#iniciSembra").on("dp.change", function (e) {
 								$('#fiSembra').data("DateTimePicker").minDate(e.date);
 						});
 				$('#fiSembra').datetimepicker({
-					format: 'DD/MM',
+					format: 'DD-MM',
 					locale: 'ca'
 				});
 				$('#iniciPlanta').datetimepicker({
-					format: 'DD/MM',
+					format: 'DD-MM',
 					locale: 'ca'
 				});
 				$("#iniciPlanta").on("dp.change", function (e) {
 								$('#fiPlanta').data("DateTimePicker").minDate(e.date);
 						});
 				$('#fiPlanta').datetimepicker({
-					format: 'DD/MM',
+					format: 'DD-MM',
 					locale: 'ca'
 				});
 				$('#iniciCollita').datetimepicker({
-					format: 'DD/MM',
+					format: 'DD-MM',
 					locale: 'ca'
 				});
 				$("#iniciCollita").on("dp.change", function (e) {
 								$('#fiCollita').data("DateTimePicker").minDate(e.date);
 						});
 				$('#fiCollita').datetimepicker({
-					format: 'DD/MM',
+					format: 'DD-MM',
 					locale: 'ca'
 				});
 		});
@@ -105,7 +105,7 @@
           </div>
 					<div class="form-group">
 						{!! Form::checkbox('ministeri') !!}
-						Informació extreta del ministèri
+						Informació extreta del ministeri
 					</div>
 
           {!! Form::submit('Crea', ['class' => 'btn btn-default']) !!}

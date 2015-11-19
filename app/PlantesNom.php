@@ -16,6 +16,15 @@ class PlantesNom extends Model {
 			return $this->belongsTo('App\planta', 'planta_id', 'id');
   }
 
+	static public function llistarNoms($id)
+	{
+		$results = PlantesNom::select('id', 'nom')->where('planta_id', '=', $id)->get()->toArray();
+		//dd(count($results));
+			if(count($results)>0){
+				return $results;
+			}
+			else return null;
 
+	}
 
 }
