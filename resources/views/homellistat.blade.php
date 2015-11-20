@@ -2,7 +2,7 @@
   <div class="col-sm-3 col-md-3"><img src='/imatges/perfils/image.jpg' width='150' height='150' title='Aci va la foto' class="img-responsive"> </div>
   <div class="col-sm-9 col-md-9">
     <div class="row">
-      <div class="col-sm-4 col-md-4">Nick: </div>
+      <div class="col-sm-4 col-md-4">Nicka: </div>
       <div class="col-sm-8 col-md-8">{{$dades['info']['nick']}}</div>
       <div class="col-sm-4 col-md-4">Nom i Cognoms: </div>
       <div class="col-sm-8 col-md-8">{{$dades['info']['nom']}} {{$dades['info']['cognoms']}}</div>
