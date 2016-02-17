@@ -63,7 +63,7 @@ class Cultiu extends Model {
 	static public function infoCultiu($id)
 	{
 		$cultiu = Cultiu::select('id', 'headline as nom', 'text as descripcio', 'camp_id', 'startDate', 'endDate')->where('id', '=', $id)->first();
-		if(!is_null($results)){
+		if(!is_null($cultiu)){
 			/*$cultiu = ['id' => $results->id,
 								'nom' => $results->headline,
 								'descripcio' => $results->text,
