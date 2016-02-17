@@ -213,7 +213,7 @@ echo json_encode($c);
 		//$llistat = CultiuController::llistarEvents($cultiu);
 		$events = Event::eventsCultiu($cultiu);
 		$dades = ['events' => $events, 'editable' => Cultiu::esEditable($cultiu)];
-
+dd($dades);
 		return view('privat.cultiullistat')->with('dades', $dades);
 	}
 
